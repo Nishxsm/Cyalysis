@@ -1,0 +1,231 @@
+.landing-hero {
+  position: relative;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f4f3f1;
+  color: #111111;
+}
+
+
+/* ================================
+   CONTENT
+================================ */
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+
+  width: min(900px, 90%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+}
+
+
+/* ================================
+   SYMBOL
+================================ */
+
+.hero-symbol {
+  margin-bottom: 28px;
+
+  font-size: 42px;
+  line-height: 1;
+
+  font-family: monospace;
+
+  transform: rotate(45deg);
+}
+
+
+/* ================================
+   EYEBROW
+================================ */
+
+.hero-eyebrow {
+  margin-bottom: 28px;
+
+  font-family: monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+
+  color: #888784;
+}
+
+
+/* ================================
+   HEADING
+================================ */
+
+.hero-content h1 {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+
+  font-size: clamp(52px, 6vw, 92px);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+
+/* ================================
+   DESCRIPTION
+================================ */
+
+.hero-description {
+  max-width: 680px;
+
+  margin: 42px 0 34px;
+
+  font-family: monospace;
+  font-size: 16px;
+  line-height: 1.65;
+
+  color: #555552;
+}
+
+
+/* ================================
+   BUTTON
+================================ */
+
+.hero-button {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 18px 30px;
+
+  border: none;
+  border-radius: 999px;
+
+  background: #111111;
+  color: #ffffff;
+
+  font-family: monospace;
+  font-size: 16px;
+
+  cursor: pointer;
+
+  transition:
+    transform 180ms ease,
+    background 180ms ease;
+}
+
+.hero-button span {
+  font-size: 20px;
+}
+
+.hero-button:hover {
+  transform: translateY(-2px);
+  background: #252525;
+}
+
+
+/* ================================
+   BACKGROUND LABELS
+================================ */
+
+.hero-bg-labels {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+}
+
+.label {
+  position: absolute;
+
+  font-family: monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+
+  color: rgba(0, 0, 0, 0.055);
+
+  white-space: nowrap;
+}
+
+
+/* Individual positions */
+
+.label-1 {
+  top: 17%;
+  left: 12%;
+  transform: rotate(-12deg);
+}
+
+.label-2 {
+  top: 12%;
+  right: 15%;
+  transform: rotate(-8deg);
+}
+
+.label-3 {
+  top: 32%;
+  left: 8%;
+  transform: rotate(7deg);
+}
+
+.label-4 {
+  top: 30%;
+  right: 10%;
+  transform: rotate(-5deg);
+}
+
+.label-5 {
+  bottom: 31%;
+  left: 17%;
+  transform: rotate(9deg);
+}
+
+.label-6 {
+  bottom: 20%;
+  right: 13%;
+  transform: rotate(-7deg);
+}
+
+.label-7 {
+  bottom: 14%;
+  left: 35%;
+  transform: rotate(4deg);
+}
+
+.label-8 {
+  top: 55%;
+  right: 34%;
+  transform: rotate(-9deg);
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 700px) {
+
+  .hero-eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+  }
+
+  .hero-content h1 {
+    font-size: 48px;
+  }
+
+  .hero-description {
+    font-size: 14px;
+    padding: 0 15px;
+  }
+
+  .hero-bg-labels {
+    opacity: 0.6;
+  }
+}

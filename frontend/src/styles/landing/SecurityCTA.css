@@ -1,0 +1,168 @@
+.security-cta {
+  position: relative;
+
+  min-height: 100vh;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background: #f4f3f1;
+  color: #111111;
+}
+
+
+/* ─────────────────────────────
+   Subtle top glow
+───────────────────────────── */
+
+.security-cta-glow {
+  position: absolute;
+
+  top: -35%;
+  left: 50%;
+
+  width: 900px;
+  height: 600px;
+
+  transform: translateX(-50%);
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(130, 105, 90, 0.08) 0%,
+      rgba(130, 105, 90, 0.025) 40%,
+      transparent 70%
+    );
+
+  pointer-events: none;
+}
+
+
+/* ─────────────────────────────
+   Content
+───────────────────────────── */
+
+.security-cta-content {
+  position: relative;
+  z-index: 1;
+
+  text-align: center;
+
+  margin-top: -20px;
+}
+
+
+/* ─────────────────────────────
+   Heading
+───────────────────────────── */
+
+.security-cta h2 {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: clamp(58px, 7vw, 108px);
+  font-weight: 400;
+
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+}
+
+.security-cta h2 span {
+  font-style: italic;
+
+  font-family:
+    "Courier New",
+    Courier,
+    monospace;
+
+  font-size: 0.82em;
+
+  letter-spacing: -0.08em;
+}
+
+
+/* ─────────────────────────────
+   Buttons
+───────────────────────────── */
+
+.security-cta-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 18px;
+
+  margin-top: 48px;
+}
+
+.security-cta-actions button {
+  border: none;
+  border-radius: 999px;
+
+  padding: 17px 28px;
+
+  font-family: monospace;
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition:
+    transform 180ms ease,
+    background 180ms ease;
+}
+
+
+/* Primary */
+
+.security-cta-primary {
+  background: #111111;
+  color: #ffffff;
+}
+
+.security-cta-primary:hover {
+  background: #252525;
+  transform: translateY(-2px);
+}
+
+
+/* Secondary */
+
+.security-cta-secondary {
+  background: rgba(0, 0, 0, 0.055);
+  color: #111111;
+}
+
+.security-cta-secondary:hover {
+  background: rgba(0, 0, 0, 0.09);
+  transform: translateY(-2px);
+}
+
+
+/* ─────────────────────────────
+   Mobile
+───────────────────────────── */
+
+@media (max-width: 700px) {
+  .security-cta {
+    padding: 0 24px;
+  }
+
+  .security-cta h2 {
+    font-size: clamp(48px, 13vw, 72px);
+  }
+
+  .security-cta-actions {
+    gap: 10px;
+    margin-top: 38px;
+  }
+
+  .security-cta-actions button {
+    padding: 14px 21px;
+    font-size: 12px;
+  }
+}
