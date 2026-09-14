@@ -1,6 +1,6 @@
 import "../../styles/landing/SecurityCTA.css";
 
-function SecurityCTA() {
+export default function SecurityCTA() {
   return (
     <section className="security-cta">
       <div className="security-cta-glow" />
@@ -26,4 +26,3 @@ function SecurityCTA() {
   );
 }
 
-export default SecurityCTA;

@@ -34,7 +34,7 @@ function TechnologyCard({ name, short }) {
 }
 
 function TechnologyColumn({ items, className }) {
-  // Duplicate the list so the marquee can loop seamlessly.
+  // duplicatin the list so the marque can loop seamlessly
   const duplicatedItems = [...items, ...items];
 
   return (
@@ -52,11 +52,11 @@ function TechnologyColumn({ items, className }) {
   );
 }
 
-function TechnologyAnalysis() {
+export default function TechnologyAnalysis() {
   return (
     <section className="technology-analysis">
 
-      {/* LEFT — MOVING TECHNOLOGY CARDS */}
+
 
       <div className="technology-showcase">
         <div className="technology-columns">
@@ -98,7 +98,7 @@ function TechnologyAnalysis() {
       </div>
 
 
-      {/* RIGHT — CYALYSIS INFORMATION */}
+
 
       <div className="technology-content">
 
@@ -169,4 +169,3 @@ function TechnologyAnalysis() {
   );
 }
 
-export default TechnologyAnalysis;

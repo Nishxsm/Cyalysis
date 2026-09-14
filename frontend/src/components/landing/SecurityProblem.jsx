@@ -1,9 +1,9 @@
 import "../../styles/landing/SecurityProblem.css";
 
-function SecurityProblem() {
+export default function SecurityProblem() {
   return (
     <section className="security-problem">
-      {/* LEFT */}
+ 
       <div className="problem-content">
         <div className="problem-eyebrow">
           THE_PROBLEM
@@ -69,7 +69,7 @@ function SecurityProblem() {
         </div>
       </div>
 
-      {/* RIGHT */}
+
       <div className="security-dashboard">
         <div className="dashboard-header">
           <span>DASHBOARD</span>
@@ -83,7 +83,7 @@ function SecurityProblem() {
 
         <div className="dashboard-body">
 
-          {/* SCORE */}
+
           <div className="dashboard-alert">
             <div className="score">
               <strong>72</strong>
@@ -103,7 +103,7 @@ function SecurityProblem() {
             </div>
           </div>
 
-          {/* STATS */}
+
           <div className="dashboard-stats">
             <div>
               <strong>57</strong>
@@ -126,7 +126,7 @@ function SecurityProblem() {
             </div>
           </div>
 
-          {/* CATEGORIES */}
+
           <div className="dashboard-section">
             <div className="dashboard-label">
               ANALYSIS CATEGORIES
@@ -143,7 +143,7 @@ function SecurityProblem() {
             </div>
           </div>
 
-          {/* FINDINGS */}
+
           <div className="dashboard-section">
             <div className="dashboard-label">
               RECENT FINDINGS
@@ -196,4 +196,3 @@ function SecurityProblem() {
   );
 }
 
-export default SecurityProblem;

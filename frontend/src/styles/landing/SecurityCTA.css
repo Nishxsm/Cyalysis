@@ -15,9 +15,6 @@
 }
 
 
-/* ─────────────────────────────
-   Subtle top glow
-───────────────────────────── */
 
 .security-cta-glow {
   position: absolute;
@@ -42,9 +39,6 @@
 }
 
 
-/* ─────────────────────────────
-   Content
-───────────────────────────── */
 
 .security-cta-content {
   position: relative;
@@ -56,9 +50,6 @@
 }
 
 
-/* ─────────────────────────────
-   Heading
-───────────────────────────── */
 
 .security-cta h2 {
   margin: 0;
@@ -85,10 +76,6 @@
   letter-spacing: -0.08em;
 }
 
-
-/* ─────────────────────────────
-   Buttons
-───────────────────────────── */
 
 .security-cta-actions {
   display: flex;
@@ -117,7 +104,6 @@
 }
 
 
-/* Primary */
 
 .security-cta-primary {
   background: #111111;
@@ -130,7 +116,7 @@
 }
 
 
-/* Secondary */
+
 
 .security-cta-secondary {
   background: rgba(0, 0, 0, 0.055);
@@ -143,9 +129,7 @@
 }
 
 
-/* ─────────────────────────────
-   Mobile
-───────────────────────────── */
+
 
 @media (max-width: 700px) {
   .security-cta {

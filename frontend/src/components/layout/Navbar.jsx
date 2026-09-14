@@ -10,15 +10,15 @@ function Navbar() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Always show navbar at the very top
+      //always showat the very top
       if (currentScrollY <= 20) {
         setHidden(false);
       }
-      // Scrolling down
+      // scrollin down
       else if (currentScrollY > lastScrollY) {
         setHidden(true);
       }
-      // Scrolling up
+      // crollin up
       else if (currentScrollY < lastScrollY) {
         setHidden(false);
       }

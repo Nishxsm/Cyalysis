@@ -19,10 +19,6 @@
 }
 
 
-/* ─────────────────────────────
-   LEFT — TECHNOLOGY SHOWCASE
-───────────────────────────── */
-
 .technology-showcase {
   height: 680px;
 
@@ -34,11 +30,6 @@
   position: relative;
 }
 
-
-/*
-   Fade the cards at the top and
-   bottom so they disappear naturally.
-*/
 
 .technology-showcase::before,
 .technology-showcase::after {
@@ -77,10 +68,6 @@
 }
 
 
-/* ─────────────────────────────
-   COLUMNS
-───────────────────────────── */
-
 .technology-columns {
   width: 100%;
   max-width: 650px;
@@ -100,9 +87,6 @@
 }
 
 
-/* ─────────────────────────────
-   MOVING TRACK
-───────────────────────────── */
 
 .technology-track {
   display: flex;
@@ -114,10 +98,7 @@
 }
 
 
-/*
-   Each column moves at a different
-   speed to avoid looking synchronized.
-*/
+
 
 .column-one .technology-track {
   animation-name: technology-scroll-up;
@@ -137,9 +118,6 @@
 }
 
 
-/*
-   Move DOWN continuously.
-*/
 
 @keyframes technology-scroll-up {
   from {
@@ -162,9 +140,6 @@
 }
 
 
-/* ─────────────────────────────
-   TECHNOLOGY CARD
-───────────────────────────── */
 
 .technology-card {
   flex-shrink: 0;
@@ -195,7 +170,7 @@
 }
 
 
-/* Icon */
+
 
 .technology-icon {
   width: 34px;
@@ -216,7 +191,7 @@
 }
 
 
-/* Card text */
+
 
 .technology-info {
   display: flex;
@@ -239,9 +214,7 @@
 }
 
 
-/* ─────────────────────────────
-   RIGHT — CONTENT
-───────────────────────────── */
+
 
 .technology-content {
   max-width: 600px;
@@ -292,9 +265,6 @@
 }
 
 
-/* ─────────────────────────────
-   FEATURES
-───────────────────────────── */
 
 .technology-features {
   width: 100%;
@@ -342,9 +312,7 @@
 }
 
 
-/* ─────────────────────────────
-   MOBILE
-───────────────────────────── */
+
 
 @media (max-width: 950px) {
   .technology-analysis {
