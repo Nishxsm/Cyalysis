@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { Cloud } from "lucide-react";
 import "../../styles/landing/SecurityCTA.css";
@@ -30,6 +31,8 @@ const clouds = [
 ];
 
 export default function SecurityCTA() {
+  const navigate = useNavigate();
+
   return (
     <section className="security-cta">
       <div className="security-clouds">
@@ -61,7 +64,10 @@ export default function SecurityCTA() {
         </h2>
 
         <div className="security-cta-actions">
-          <button className="security-cta-primary">
+          <button
+            className="security-cta-primary"
+            onClick={() => navigate("/analysis")}
+          >
             Start Analysis
           </button>
 
@@ -73,4 +79,3 @@ export default function SecurityCTA() {
     </section>
   );
 }
-

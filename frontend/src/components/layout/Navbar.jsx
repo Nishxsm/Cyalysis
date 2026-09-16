@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../styles/layout/Navbar.css";
 
 export default function Navbar() {
   const [hidden, setHidden] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
@@ -44,11 +46,13 @@ export default function Navbar() {
         <a href="#pricing"></a>
         <a href="#security"></a>
 
-        <button className="navbar-button">
+        <button
+          className="navbar-button"
+          onClick={() => navigate("/analysis")}
+        >
           ANALYZE
         </button>
       </nav>
     </header>
   );
 }
-

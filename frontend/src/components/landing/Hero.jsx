@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import "../../styles/landing/Hero.css";
 
 export default function LandingHero() {
+  const navigate = useNavigate();
+
   return (
     <section className="landing-hero">
 
@@ -50,7 +53,10 @@ export default function LandingHero() {
           understand where your defenses can be improved.
         </p>
 
-        <button className="hero-button">
+        <button
+          className="hero-button"
+          onClick={() => navigate("/analysis")}
+        >
           Start Analysis
           <span>→</span>
         </button>
