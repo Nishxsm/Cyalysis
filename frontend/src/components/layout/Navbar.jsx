@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "../../styles/layout/Navbar.css";
 
-function Navbar() {
+export default function Navbar() {
   const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
@@ -52,4 +52,3 @@ function Navbar() {
   );
 }
 
-export default Navbar;

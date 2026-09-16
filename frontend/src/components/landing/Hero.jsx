@@ -4,6 +4,21 @@ export default function LandingHero() {
   return (
     <section className="landing-hero">
 
+      <div className="hero-video-wrapper">
+        <video
+          className="hero-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        >
+          <source src="/1.mp4" type="video/mp4" />
+        </video>
+      </div>
+
+      <div className="hero-video-overlay" />
+
       <div className="hero-bg-labels">
         <span className="label label-1">dns_lookup</span>
         <span className="label label-2">tls_analysis</span>
@@ -17,31 +32,23 @@ export default function LandingHero() {
 
       <div className="hero-content">
 
-        <div className="hero-symbol">
-          
-        </div>
-
-   
         <div className="hero-eyebrow">
           WEB SECURITY ANALYSIS&nbsp;&nbsp;·&nbsp;&nbsp;
           CONTROLLED SCANNING&nbsp;&nbsp;·&nbsp;&nbsp;
           REAL-TIME ASSESSMENT
         </div>
 
-   
         <h1>
           See what your website
           <br />
           exposes to the internet.
         </h1>
 
-
         <p className="hero-description">
           CYALYSIS analyzes your website's security surface,
           identifies potential weaknesses, and helps you
           understand where your defenses can be improved.
         </p>
-
 
         <button className="hero-button">
           Start Analysis
@@ -52,4 +59,3 @@ export default function LandingHero() {
     </section>
   );
 }
-

@@ -1,19 +1,14 @@
 .security-problem {
   position: relative;
-
   min-height: 100vh;
   width: 100%;
-
   display: grid;
   grid-template-columns: 1.08fr 0.92fr;
   align-items: center;
   gap: 60px;
-
   padding: 80px 5%;
-
   background: #f4f3f1;
   color: #111111;
-
   overflow: hidden;
 }
 
@@ -25,34 +20,27 @@
 
 .problem-eyebrow {
   margin-bottom: 28px;
-
   font-family: monospace;
   font-size: 13px;
   letter-spacing: 0.16em;
-
   color: #858481;
 }
 
 .problem-content h2 {
   margin: 0;
-
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(52px, 5vw, 82px);
   font-weight: 400;
-
   line-height: 0.96;
   letter-spacing: -0.055em;
 }
 
 .problem-description {
   max-width: 570px;
-
   margin: 34px 0 48px;
-
   font-family: monospace;
   font-size: 15px;
   line-height: 1.9;
-
   color: #555552;
 }
 
@@ -61,10 +49,8 @@
 
 .problem-points {
   width: 100%;
-
   border: 1px solid rgba(0, 0, 0, 0.18);
   border-radius: 28px;
-
   overflow: hidden;
 }
 
@@ -72,9 +58,7 @@
   display: flex;
   align-items: flex-start;
   gap: 20px;
-
   padding: 27px 30px;
-
   border-bottom: 1px solid rgba(0, 0, 0, 0.14);
 }
 
@@ -84,16 +68,12 @@
 
 .point-icon {
   flex-shrink: 0;
-
   width: 44px;
   height: 44px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 14px;
-
   font-family: monospace;
   font-size: 17px;
 }
@@ -118,7 +98,6 @@
 
 .problem-point h3 {
   margin: 1px 0 8px;
-
   font-family: monospace;
   font-size: 16px;
   font-weight: 500;
@@ -126,11 +105,9 @@
 
 .problem-point p {
   margin: 0;
-
   font-family: monospace;
   font-size: 13px;
   line-height: 1.7;
-
   color: #66635f;
 }
 
@@ -139,35 +116,25 @@
 .security-dashboard {
   width: 100%;
   max-width: 650px;
-
   justify-self: end;
-
   background: #f7f6f4;
-
   border: 1px solid rgba(0, 0, 0, 0.13);
   border-radius: 30px;
-
   overflow: hidden;
-
   box-shadow:
     0 25px 60px rgba(0, 0, 0, 0.09);
 }
 
 .dashboard-header {
   height: 58px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   padding: 0 26px;
-
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-
   font-family: monospace;
   font-size: 12px;
   letter-spacing: 0.14em;
-
   color: #8a8884;
 }
 
@@ -179,12 +146,9 @@
 .dashboard-dots span {
   width: 7px;
   height: 7px;
-
   border-radius: 50%;
-
   background: #c7c5c1;
 }
-
 
 
 
@@ -193,25 +157,18 @@
 }
 
 
-
-
 .dashboard-alert {
   display: flex;
   align-items: center;
-
   gap: 28px;
-
   padding: 24px;
-
   border: 1px solid #e9c2bb;
   border-radius: 22px;
-
   background: #fff7f5;
 }
 
 .score {
   min-width: 100px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -221,19 +178,15 @@
   font-family: Georgia, serif;
   font-size: 46px;
   font-weight: 400;
-
   line-height: 1;
-
   color: #c93425;
 }
 
 .score span {
   margin-top: 8px;
-
   font-family: monospace;
   font-size: 11px;
   letter-spacing: 0.12em;
-
   color: #b12e21;
 }
 
@@ -248,33 +201,25 @@
 
 .alert-copy p {
   margin: 8px 0 0;
-
   font-size: 12px;
   line-height: 1.7;
-
   color: #5d5855;
 }
-
 
 
 
 .dashboard-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-
   margin-top: 24px;
-
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 20px;
-
   overflow: hidden;
 }
 
 .dashboard-stats > div {
   padding: 20px 10px;
-
   text-align: center;
-
   border-right: 1px solid rgba(0, 0, 0, 0.15);
 }
 
@@ -284,7 +229,6 @@
 
 .dashboard-stats strong {
   display: block;
-
   font-family: Georgia, serif;
   font-size: 27px;
   font-weight: 400;
@@ -292,12 +236,9 @@
 
 .dashboard-stats span {
   display: block;
-
   margin-top: 7px;
-
   font-family: monospace;
   font-size: 11px;
-
   color: #85827e;
 }
 
@@ -318,11 +259,9 @@
 
 .dashboard-label {
   margin-bottom: 10px;
-
   font-family: monospace;
   font-size: 12px;
   letter-spacing: 0.13em;
-
   color: #92908c;
 }
 
@@ -334,15 +273,11 @@
 
 .category-list span {
   padding: 9px 13px;
-
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 999px;
-
   background: #f0efed;
-
   font-family: monospace;
   font-size: 11px;
-
   color: #55534f;
 }
 
@@ -352,46 +287,33 @@
 .finding {
   display: flex;
   align-items: center;
-
   gap: 13px;
-
   padding: 14px;
-
   margin-top: 9px;
-
   border: 1px solid #ebc7c1;
   border-radius: 16px;
-
   background: #fff8f6;
 }
 
 .finding-icon {
   width: 32px;
   height: 32px;
-
   flex-shrink: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 10px;
-
   background: #ffebe7;
   border: 1px solid #edc0b9;
-
   font-family: monospace;
-
   color: #c93425;
 }
 
 .finding-copy {
   flex: 1;
-
   display: flex;
   flex-direction: column;
   gap: 4px;
-
   font-family: monospace;
 }
 
@@ -407,9 +329,7 @@
 
 .severity {
   padding: 5px 9px;
-
   border-radius: 999px;
-
   font-family: monospace;
   font-size: 9px;
   letter-spacing: 0.08em;

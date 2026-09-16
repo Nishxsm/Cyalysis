@@ -1,13 +1,48 @@
 .landing-hero {
   position: relative;
   min-height: 100vh;
-
   display: flex;
   align-items: center;
-  justify-content: center;
-
   background: #f4f3f1;
   color: #111111;
+  overflow: hidden;
+}
+
+
+
+
+.hero-video-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero-video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.90;
+  filter: grayscale(100%);
+}
+
+
+
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      90deg,
+      #f4f3f1 0%,
+      rgba(244, 243, 241, 0.96) 28%,
+      rgba(244, 243, 241, 0.68) 55%,
+      rgba(244, 243, 241, 0.25) 100%
+    );
+
+  pointer-events: none;
 }
 
 
@@ -15,29 +50,13 @@
 
 .hero-content {
   position: relative;
-  z-index: 2;
-
-  width: min(900px, 90%);
-
+  z-index: 3;
+  width: min(760px, 90%);
+  margin-left: 8%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-
-  text-align: center;
-}
-
-
-
-
-.hero-symbol {
-  margin-bottom: 28px;
-
-  font-size: 42px;
-  line-height: 1;
-
-  font-family: monospace;
-
-  transform: rotate(45deg);
+  align-items: flex-start;
+  text-align: left;
 }
 
 
@@ -45,12 +64,10 @@
 
 .hero-eyebrow {
   margin-bottom: 28px;
-
   font-family: monospace;
   font-size: 12px;
   letter-spacing: 0.12em;
-
-  color: #888784;
+  color: #777773;
 }
 
 
@@ -58,30 +75,25 @@
 
 .hero-content h1 {
   margin: 0;
-
   font-family: Georgia, "Times New Roman", serif;
   font-weight: 400;
-
   font-size: clamp(52px, 6vw, 92px);
   line-height: 0.95;
   letter-spacing: -0.045em;
+  max-width: 850px;
 }
 
 
 
 
 .hero-description {
-  max-width: 680px;
-
+  max-width: 610px;
   margin: 42px 0 34px;
-
   font-family: monospace;
   font-size: 16px;
   line-height: 1.65;
-
   color: #555552;
 }
-
 
 
 
@@ -89,20 +101,14 @@
   display: flex;
   align-items: center;
   gap: 18px;
-
   padding: 18px 30px;
-
   border: none;
   border-radius: 999px;
-
   background: #111111;
   color: #ffffff;
-
   font-family: monospace;
   font-size: 16px;
-
   cursor: pointer;
-
   transition:
     transform 180ms ease,
     background 180ms ease;
@@ -119,27 +125,21 @@
 
 
 
-
 .hero-bg-labels {
   position: absolute;
   inset: 0;
-
+  z-index: 2;
   pointer-events: none;
 }
 
 .label {
   position: absolute;
-
   font-family: monospace;
   font-size: 12px;
   letter-spacing: 0.12em;
-
   color: rgba(0, 0, 0, 0.055);
-
   white-space: nowrap;
 }
-
-
 
 .label-1 {
   top: 17%;
@@ -194,6 +194,11 @@
 
 @media (max-width: 700px) {
 
+  .hero-content {
+    width: 90%;
+    margin-left: 5%;
+  }
+
   .hero-eyebrow {
     font-size: 9px;
     letter-spacing: 0.08em;
@@ -205,7 +210,21 @@
 
   .hero-description {
     font-size: 14px;
-    padding: 0 15px;
+    padding: 0;
+    max-width: 520px;
+  }
+
+  .hero-video {
+    opacity: 0.2;
+  }
+
+  .hero-video-overlay {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(244, 243, 241, 0.97),
+        rgba(244, 243, 241, 0.8)
+      );
   }
 
   .hero-bg-labels {
