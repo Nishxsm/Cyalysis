@@ -1,57 +1,8 @@
 import { useEffect, useState } from "react";
 import ScanConsole from "./ScanConsole";
 import "../../styles/analysis/ScanProgress.css";
+import { scanChecks } from "./ScanChecks";
 
-const scanChecks = [
-  "URL Validation",
-  "Domain Resolution",
-  "IP Resolution",
-  "DNS A Record",
-  "DNS AAAA Record",
-  "DNS CNAME Record",
-  "DNS MX Record",
-  "DNS NS Record",
-  "DNS TXT Record",
-  "HTTP Status Analysis",
-  "HTTPS Availability",
-  "HTTPS Enforcement",
-  "Redirect Chain",
-  "Response Headers",
-  "Server Banner",
-  "Response Time",
-  "Content-Type",
-  "Web Server Detection",
-  "Framework Detection",
-  "CMS Detection",
-  "Library Detection",
-  "CDN Detection",
-  "CSP Analysis",
-  "HSTS Analysis",
-  "X-Content-Type Analysis",
-  "Clickjacking Analysis",
-  "Referrer Policy",
-  "Permissions Policy",
-  "Security Header Completeness",
-  "Cookie Enumeration",
-  "Cookie Security",
-  "CORS Analysis",
-  "TLS Certificate",
-  "TLS Expiration",
-  "TLS Hostname",
-  "TLS Chain",
-  "TLS Version",
-  "Cipher Configuration",
-  "Server Version Disclosure",
-  "Technology Version Disclosure",
-  "Debug Information",
-  "Verbose Error Analysis",
-  "Metadata Analysis",
-  "HTTP Method Enumeration",
-  "OPTIONS Analysis",
-  "Method Restriction",
-  "TRACE Analysis",
-  "Unsupported Methods",
-];
 
 export default function ScanProgress({ target }) {
   const [completed, setCompleted] = useState(0);
