@@ -1,0 +1,164 @@
+.scan-progress {
+  width: min(1000px, 100%);
+  margin: 0 auto;
+  padding: 50px 0 70px;
+}
+
+
+.scan-progress-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.scan-target {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scan-label {
+  font-family: monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: #9a9995;
+}
+
+.scan-target-url {
+  font-family: monospace;
+  font-size: 17px;
+  color: #222222;
+}
+
+.scan-counter {
+  font-family: monospace;
+  font-size: 28px;
+  color: #00a88f;
+}
+
+.scan-counter-total {
+  color: #aaa9a5;
+}
+
+
+.scan-radar {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 30px;
+}
+
+.radar-ring {
+  position: absolute;
+  border: 1px solid rgba(0, 168, 143, 0.3);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.radar-ring-one {
+  width: 55px;
+  height: 55px;
+}
+
+.radar-ring-two {
+  width: 100px;
+  height: 100px;
+}
+
+.radar-ring-three {
+  width: 145px;
+  height: 145px;
+  border-color: rgba(0, 168, 143, 0.18);
+}
+
+.radar-dot {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #00a88f;
+  box-shadow:
+    0 0 0 8px rgba(0, 168, 143, 0.06),
+    0 0 25px rgba(0, 168, 143, 0.18);
+
+  animation: radar-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes radar-pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+}
+
+
+
+.scan-current {
+  width: min(650px, 100%);
+  margin: 0 auto 32px;
+}
+
+.scan-current-label {
+  margin-bottom: 5px;
+  font-family: monospace;
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  color: #9a9995;
+}
+
+.scan-current-check {
+  margin-bottom: 12px;
+  font-family: monospace;
+  font-size: 15px;
+  color: #44433f;
+}
+
+.scan-progress-track {
+  width: 100%;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #deddd9;
+}
+
+.scan-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: #00a88f;
+  transition: width 500ms ease;
+}
+
+
+@media (max-width: 600px) {
+  .scan-progress {
+    padding: 35px 0 50px;
+  }
+
+  .scan-counter {
+    font-size: 22px;
+  }
+
+  .scan-target-url {
+    font-size: 14px;
+  }
+
+  .scan-radar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .radar-ring-three {
+    width: 115px;
+    height: 115px;
+  }
+}
