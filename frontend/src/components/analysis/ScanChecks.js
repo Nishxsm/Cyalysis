@@ -1,57 +1,104 @@
 export const scanChecks = [
+
+  // TARGET OPERATIONS
+
   "URL Validation",
   "Domain Resolution",
   "IP Resolution",
+  "Port Identification",
+
+
+
+  // DNS OPERATIONS
+
   "DNS A Record",
   "DNS AAAA Record",
   "DNS CNAME Record",
   "DNS MX Record",
   "DNS NS Record",
   "DNS TXT Record",
+
+
+  // HTTP OPERATIONS
+
   "HTTP Status Analysis",
-  "HTTPS Availability",
-  "HTTPS Enforcement",
-  "Redirect Chain",
-  "Response Headers",
-  "Server Banner",
-  "Response Time",
-  "Content-Type",
+  "HTTPS Availability Check",
+  "HTTPS Enforcement Check",
+  "Redirect Chain Analysis",
+  "Response Header Analysis",
+  "Server Banner Detection",
+  "Response Time Measurement",
+  "Content-Type Analysis",
+
+
+  // TECHNOLOGY OPERATIONS
+
   "Web Server Detection",
   "Framework Detection",
   "CMS Detection",
   "Library Detection",
   "CDN Detection",
+
+
+
+  // SECURITY HEADER OPERATIONS
+
   "CSP Analysis",
   "HSTS Analysis",
   "X-Content-Type Analysis",
-  "Clickjacking Analysis",
-  "Referrer Policy",
-  "Permissions Policy",
+  "Clickjacking Protection Analysis",
+  "Referrer Policy Analysis",
+  "Permissions Policy Analysis",
   "Security Header Completeness",
+
+
+  // COOKIE OPERATIONS
+
   "Cookie Enumeration",
-  "Cookie Security",
+  "Secure Flag Analysis",
+  "HttpOnly Flag Analysis",
   "SameSite Analysis",
-  "Cookie Scope",
-  "Cookie Expiration",
-  "CORS Header",
+  "Cookie Scope Analysis",
+  "Cookie Expiration Analysis",
+
+
+  // CORS OPERATIONS
+
+  "CORS Header Analysis",
   "CORS Origin Policy",
   "CORS Credential Policy",
   "CORS Method Analysis",
   "CORS Header Policy",
-  "TLS Certificate",
-  "TLS Expiration",
-  "TLS Hostname",
-  "TLS Chain",
+
+
+
+  // TLS OPERATIONS
+
+  "Certificate Validation",
+  "Certificate Expiration",
+  "Hostname Verification",
+  "Certificate Chain",
   "TLS Version",
   "Cipher Configuration",
+
+
+
+  // INFORMATION DISCLOSURE
+
   "Server Version Disclosure",
   "Technology Version Disclosure",
-  "Debug Information",
+  "Debug Information Detection",
   "Verbose Error Analysis",
-  "Metadata Analysis",
+  "Metadata Disclosure Analysis",
+
+
+
+  // HTTP METHOD OPERATIONS
+
   "HTTP Method Enumeration",
   "OPTIONS Analysis",
   "Method Restriction",
   "TRACE Analysis",
-  "Unsupported Methods",
+  "Unsupported Method Analysis"
+
 ];

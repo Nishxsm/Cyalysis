@@ -1,6 +1,15 @@
 import sys
 import json
+import re
 from urllib.parse import urlparse
+
+from analysis.result_normalizer import (
+    normalize_results,
+    build_summary
+)
+
+from analysis.finding_builder import build_findings
+
 
 from checks.url_validation import run as validate_url
 from checks.domain_resolution import run as resolve_domain
@@ -69,6 +78,19 @@ from checks.method_restriction import run as check_method_restriction
 from checks.trace import run as check_trace
 from checks.unsupported_method import run as check_unsupported_method
 
+def normalize_target(raw_target):
+    target = raw_target.strip()
+
+    markdown_match = re.search(
+        r"https?://[^\s\]\)]+",
+        target
+    )
+
+    if markdown_match:
+        return markdown_match.group(0)
+
+    return target
+
 
 def run_scan(target):
     results = []
@@ -104,23 +126,19 @@ def run_scan(target):
             "checks": results
         }
 
-
     # IP RESOLUTION
 
     ip_result = resolve_ip(domain)
     results.append(ip_result)
 
 
-  
     # PORT IDENTIFICATION
 
     port_result = identify_port(target)
     results.append(port_result)
 
 
-
     # DNS RECORDS
-
     dns_checks = [
         check_a,
         check_aaaa,
@@ -134,10 +152,7 @@ def run_scan(target):
         result = check(domain)
         results.append(result)
 
-
-
     # HTTP OPERATIONS
-
     http_checks = [
         check_http_status,
         check_https_availability,
@@ -152,7 +167,6 @@ def run_scan(target):
     for check in http_checks:
         result = check(target)
         results.append(result)
-
 
 
 
@@ -172,9 +186,7 @@ def run_scan(target):
 
 
 
-
     # SECURITY HEADER OPERATIONS
-
     security_header_checks = [
         check_csp,
         check_hsts,
@@ -190,9 +202,7 @@ def run_scan(target):
         results.append(result)
 
 
-
     # COOKIE OPERATIONS
-
     cookie_checks = [
         check_cookie_enumeration,
         check_cookie_secure,
@@ -208,9 +218,7 @@ def run_scan(target):
 
 
 
-
     # CORS OPERATIONS
-
     cors_checks = [
         check_cors_header,
         check_cors_origin_policy,
@@ -226,7 +234,6 @@ def run_scan(target):
 
 
     # TLS OPERATIONS
-
     tls_checks = [
         check_certificate_validation,
         check_certificate_expiration,
@@ -241,9 +248,7 @@ def run_scan(target):
         results.append(result)
 
 
-   
     # INFORMATION DISCLOSURE
-
     information_disclosure_checks = [
         check_server_version_disclosure,
         check_technology_version_disclosure,
@@ -258,7 +263,6 @@ def run_scan(target):
 
 
     # HTTP METHOD OPERATIONS
-
     http_method_checks = [
         check_http_method_enumeration,
         check_options_analysis,
@@ -272,13 +276,29 @@ def run_scan(target):
         results.append(result)
 
 
-    # FINAL RESULT
+    # NORMALIZE RESULTS
+    normalized_results = normalize_results(results)
 
+
+
+    # BUILD SUMMARY
+    summary = build_summary(normalized_results)
+
+
+
+    # BUILD FINDINGS
+    findings = build_findings(normalized_results)
+
+
+
+    # FINAL RESULT
     return {
         "target": target,
         "domain": domain,
         "status": "completed",
-        "checks": results
+        "summary": summary,
+        "results": normalized_results,
+        "findings": findings
     }
 
 
@@ -291,7 +311,8 @@ def main():
 
         sys.exit(1)
 
-    target = sys.argv[1].strip()
+
+    target = normalize_target(sys.argv[1])
 
     result = run_scan(target)
 
