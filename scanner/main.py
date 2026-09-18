@@ -44,6 +44,31 @@ from checks.samesite import run as check_samesite
 from checks.cookie_scope import run as check_cookie_scope
 from checks.cookie_expiration import run as check_cookie_expiration
 
+from checks.cors_header import run as check_cors_header
+from checks.cors_origin_policy import run as check_cors_origin_policy
+from checks.cors_credentials import run as check_cors_credentials
+from checks.cors_methods import run as check_cors_methods
+from checks.cors_header_policy import run as check_cors_header_policy
+
+from checks.certificate_validation import run as check_certificate_validation
+from checks.certificate_expiration import run as check_certificate_expiration
+from checks.hostname_verification import run as check_hostname_verification
+from checks.certificate_chain import run as check_certificate_chain
+from checks.tls_version import run as check_tls_version
+from checks.cipher_configuration import run as check_cipher_configuration
+
+from checks.server_version_disclosure import run as check_server_version_disclosure
+from checks.technology_version_disclosure import run as check_technology_version_disclosure
+from checks.debug_information import run as check_debug_information
+from checks.verbose_error_analysis import run as check_verbose_error_analysis
+from checks.metadata_disclosure import run as check_metadata_disclosure
+
+from checks.http_method_enumeration import run as check_http_method_enumeration
+from checks.options_analysis import run as check_options_analysis
+from checks.method_restriction import run as check_method_restriction
+from checks.trace import run as check_trace
+from checks.unsupported_method import run as check_unsupported_method
+
 
 def run_scan(target):
     results = []
@@ -181,6 +206,70 @@ def run_scan(target):
         result = check(target)
         results.append(result)
 
+
+
+
+    # CORS OPERATIONS
+
+    cors_checks = [
+        check_cors_header,
+        check_cors_origin_policy,
+        check_cors_credentials,
+        check_cors_methods,
+        check_cors_header_policy
+    ]
+
+    for check in cors_checks:
+        result = check(target)
+        results.append(result)
+
+
+
+    # TLS OPERATIONS
+
+    tls_checks = [
+        check_certificate_validation,
+        check_certificate_expiration,
+        check_hostname_verification,
+        check_certificate_chain,
+        check_tls_version,
+        check_cipher_configuration
+    ]
+
+    for check in tls_checks:
+        result = check(target)
+        results.append(result)
+
+
+   
+    # INFORMATION DISCLOSURE
+
+    information_disclosure_checks = [
+        check_server_version_disclosure,
+        check_technology_version_disclosure,
+        check_debug_information,
+        check_verbose_error_analysis,
+        check_metadata_disclosure
+    ]
+
+    for check in information_disclosure_checks:
+        result = check(target)
+        results.append(result)
+
+
+    # HTTP METHOD OPERATIONS
+
+    http_method_checks = [
+        check_http_method_enumeration,
+        check_options_analysis,
+        check_method_restriction,
+        check_trace,
+        check_unsupported_method
+    ]
+
+    for check in http_method_checks:
+        result = check(target)
+        results.append(result)
 
 
     # FINAL RESULT
