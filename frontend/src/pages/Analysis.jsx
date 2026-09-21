@@ -1,8 +1,6 @@
 import { useState } from "react";
-
 import AnalysisInput from "../components/analysis/AnalysisInput";
 import ScanProgress from "../components/analysis/ScanProgress";
-
 
 export default function Analysis() {
   const [scanning, setScanning] = useState(false);

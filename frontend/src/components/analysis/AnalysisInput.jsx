@@ -55,14 +55,17 @@ const exampleTargets = [
   "github.com",
 ];
 
-export default function Analysis() {
+export default function AnalysisInput({ onStart }) {
   const [url, setUrl] = useState("");
 
   const handleAnalyze = () => {
-    if (!url.trim()) return;
+    const target = url.trim();
 
-    // canner integration will be added her
-    console.log("Starting analysis:", url);
+    if (!target) {
+      return;
+    }
+
+    onStart(target);
   };
 
   const handleExample = (target) => {
@@ -149,9 +152,6 @@ export default function Analysis() {
           );
         })}
       </section>
-
-        
-
     </main>
   );
 }

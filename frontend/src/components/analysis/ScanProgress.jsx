@@ -1,97 +1,226 @@
 import { useEffect, useState } from "react";
-import ScanConsole from "./ScanConsole";
+import { useNavigate } from "react-router-dom";
 import "../../styles/analysis/ScanProgress.css";
-import { scanChecks } from "./ScanChecks";
-
+import ScanConsole from "./ScanConsole";
 
 export default function ScanProgress({ target }) {
-  const [completed, setCompleted] = useState(0);
+  const navigate = useNavigate();
 
+  const [scanId, setScanId] = useState(null);
+
+  const [progress, setProgress] = useState({
+    status: "starting",
+    current_check: null,
+    completed: 0,
+    total: 57,
+  });
+
+  const [error, setError] = useState(null);
+
+  /*
+   * Start the scan.
+   */
   useEffect(() => {
-    setCompleted(0);
+    let cancelled = false;
 
-    const interval = setInterval(() => {
-      setCompleted((current) => {
-        if (current >= scanChecks.length) {
-          clearInterval(interval);
-          return current;
+    async function startScan() {
+      try {
+        const response = await fetch("/api/scan", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            target,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || data.status !== "started") {
+          throw new Error(data.error || "Unable to start scan.");
         }
 
-        return current + 1;
-      });
-    }, 700);
+        if (!cancelled) {
+          setScanId(data.scan_id);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(err.message);
+        }
+      }
+    }
 
-    return () => clearInterval(interval);
-  }, []);
+    startScan();
 
-  const currentCheck =
-    completed < scanChecks.length
-      ? scanChecks[completed]
-      : "Analysis Complete";
+    return () => {
+      cancelled = true;
+    };
+  }, [target]);
 
-  const progress = Math.round(
-    (completed / scanChecks.length) * 100
-  );
+  /*
+   * Poll scanner progress.
+   */
+  useEffect(() => {
+    if (!scanId) {
+      return;
+    }
+
+    let cancelled = false;
+    let intervalId;
+
+    async function fetchProgress() {
+      try {
+        const response = await fetch(
+          `/api/scan/${scanId}/progress`
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.error || "Unable to read scan progress."
+          );
+        }
+
+        if (cancelled) {
+          return;
+        }
+
+        setProgress(data);
+
+        /*
+         * Once Python has completed all checks,
+         * fetch the final scanner result.
+         */
+        if (data.status === "completed") {
+          clearInterval(intervalId);
+
+          const resultResponse = await fetch(
+            `/api/scan/${scanId}/result`
+          );
+
+          const result = await resultResponse.json();
+
+          if (!resultResponse.ok) {
+            throw new Error(
+              result.error || "Unable to retrieve scan result."
+            );
+          }
+
+          navigate(`/insights/${scanId}`, {
+            state: {
+              result,
+            },
+          });
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(err.message);
+          clearInterval(intervalId);
+        }
+      }
+    }
+
+    fetchProgress();
+
+    intervalId = setInterval(fetchProgress, 500);
+
+    return () => {
+      cancelled = true;
+      clearInterval(intervalId);
+    };
+  }, [scanId, navigate]);
+
+  const percentage =
+    progress.total > 0
+      ? Math.round(
+          (progress.completed / progress.total) * 100
+        )
+      : 0;
+
+  if (error) {
+    return (
+      <section className="scan-progress-page">
+        <div className="scan-error">
+          <p className="scan-error-label">SCAN ERROR</p>
+
+          <h2>{error}</h2>
+
+          <p>
+            The scanner could not complete the request. Check
+            that the CodeIgniter backend is running.
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section className="scan-progress">
+    <section className="scan-progress-page">
+      <div className="scan-progress-container">
 
-      <div className="scan-progress-header">
+        <div className="scan-progress-header">
+          <div>
+            <span className="scan-label">
+              CYALYSIS / SCAN
+            </span>
 
-        <div className="scan-target">
-          <span className="scan-label">TARGET</span>
+            <h1>Analyzing target.</h1>
 
-          <span className="scan-target-url">
-            {target || "example.com"}
-          </span>
+            <p className="scan-target">
+              {target}
+            </p>
+          </div>
+
+          <div className="scan-percentage">
+            {percentage}%
+          </div>
         </div>
 
-        <div className="scan-counter">
-          <span>{completed}</span>
-          <span className="scan-counter-total">
-            / {scanChecks.length}
-          </span>
-        </div>
-
-      </div>
-
-
-      <div className="scan-radar">
-        <div className="radar-ring radar-ring-one"></div>
-        <div className="radar-ring radar-ring-two"></div>
-        <div className="radar-ring radar-ring-three"></div>
-
-        <div className="radar-dot"></div>
-      </div>
-
-
-      <div className="scan-current">
-
-        <div className="scan-current-label">
-          RUNNING
-        </div>
-
-        <div className="scan-current-check">
-          {currentCheck}
-        </div>
-
-        <div className="scan-progress-track">
+        <div className="scan-progress-bar">
           <div
             className="scan-progress-fill"
-            style={{ width: `${progress}%` }}
+            style={{
+              width: `${percentage}%`,
+            }}
           />
         </div>
 
+        <div className="scan-progress-meta">
+          <span>
+            {progress.completed} / {progress.total} checks
+          </span>
+
+          <span>
+            {progress.status === "completed"
+              ? "SCAN COMPLETE"
+              : "SCANNING"}
+          </span>
+        </div>
+
+        <div className="scan-current">
+          <span className="scan-current-label">
+            CURRENT CHECK
+          </span>
+
+          <div className="scan-current-value">
+            <span className="scan-status-dot" />
+
+            {progress.current_check ||
+              "Initializing scanner..."}
+          </div>
+        </div>
+
+        <ScanConsole
+          target={target}
+          completed={progress.completed}
+          total={progress.total}
+          currentCheck={progress.current_check}
+          status={progress.status}
+        />
+
       </div>
-
-
-      <ScanConsole
-        checks={scanChecks}
-        completed={completed}
-        currentCheck={currentCheck}
-        target={target}
-      />
-
     </section>
   );
 }

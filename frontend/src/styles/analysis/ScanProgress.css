@@ -1,164 +1,296 @@
-.scan-progress {
-  width: min(1000px, 100%);
-  margin: 0 auto;
-  padding: 50px 0 70px;
+.scan-progress-page {
+  min-height: 100vh;
+  width: 100%;
+  background: #f4f3f1;
+  color: #111111;
+  box-sizing: border-box;
 }
 
+.scan-progress-container {
+  width: min(1400px, calc(100% - 120px));
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 90px 0 70px;
+  box-sizing: border-box;
+}
+
+
+/* =========================
+   HEADER
+========================= */
 
 .scan-progress-header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 30px;
-}
-
-.scan-target {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  gap: 60px;
+  margin-bottom: 42px;
 }
 
 .scan-label {
-  font-family: monospace;
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  color: #9a9995;
+  display: block;
+  margin-bottom: 18px;
+
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  color: #7c817c;
 }
 
-.scan-target-url {
-  font-family: monospace;
-  font-size: 17px;
-  color: #222222;
+.scan-progress-header h1 {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 5vw, 72px);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
 }
 
-.scan-counter {
-  font-family: monospace;
-  font-size: 28px;
-  color: #00a88f;
+.scan-target {
+  margin: 22px 0 0;
+
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+
+  color: #737873;
 }
 
-.scan-counter-total {
-  color: #aaa9a5;
-}
+.scan-percentage {
+  flex-shrink: 0;
 
-
-.scan-radar {
-  position: relative;
-  width: 150px;
-  height: 150px;
-  margin: 0 auto 30px;
-}
-
-.radar-ring {
-  position: absolute;
-  border: 1px solid rgba(0, 168, 143, 0.3);
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.radar-ring-one {
-  width: 55px;
-  height: 55px;
-}
-
-.radar-ring-two {
-  width: 100px;
-  height: 100px;
-}
-
-.radar-ring-three {
-  width: 145px;
-  height: 145px;
-  border-color: rgba(0, 168, 143, 0.18);
-}
-
-.radar-dot {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: #00a88f;
-  box-shadow:
-    0 0 0 8px rgba(0, 168, 143, 0.06),
-    0 0 25px rgba(0, 168, 143, 0.18);
-
-  animation: radar-pulse 1.8s ease-in-out infinite;
-}
-
-@keyframes radar-pulse {
-  0%,
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  50% {
-    transform: translate(-50%, -50%) scale(1.15);
-  }
+  font-family: "Courier New", monospace;
+  font-size: 64px;
+  line-height: 1;
+  letter-spacing: -0.06em;
 }
 
 
+/* =========================
+   PROGRESS BAR
+========================= */
 
-.scan-current {
-  width: min(650px, 100%);
-  margin: 0 auto 32px;
-}
-
-.scan-current-label {
-  margin-bottom: 5px;
-  font-family: monospace;
-  font-size: 10px;
-  letter-spacing: 0.13em;
-  color: #9a9995;
-}
-
-.scan-current-check {
-  margin-bottom: 12px;
-  font-family: monospace;
-  font-size: 15px;
-  color: #44433f;
-}
-
-.scan-progress-track {
+.scan-progress-bar {
   width: 100%;
-  height: 4px;
+  height: 2px;
+
+  background: #d8d8d4;
   overflow: hidden;
-  border-radius: 999px;
-  background: #deddd9;
 }
 
 .scan-progress-fill {
   height: 100%;
-  border-radius: inherit;
-  background: #00a88f;
-  transition: width 500ms ease;
+  background: #111111;
+
+  transition: width 0.35s ease;
 }
 
 
-@media (max-width: 600px) {
-  .scan-progress {
-    padding: 35px 0 50px;
+/* =========================
+   META
+========================= */
+
+.scan-progress-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 14px;
+
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: #777b76;
+}
+
+
+/* =========================
+   CURRENT CHECK
+========================= */
+
+.scan-current {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 55px;
+  padding: 22px 0;
+
+  border-top: 1px solid #d7d6d2;
+  border-bottom: 1px solid #d7d6d2;
+}
+
+.scan-current-label {
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+
+  color: #898d88;
+}
+
+.scan-current-value {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  color: #111111;
+}
+
+.scan-status-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+  background: #111111;
+
+  animation: scanPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes scanPulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.85);
   }
 
-  .scan-counter {
-    font-size: 22px;
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+/* =========================
+   CONSOLE
+========================= */
+
+.scan-console {
+  margin-top: 45px;
+
+  border: 1px solid #d2d1cd;
+  background: #eeece8;
+}
+
+.scan-console-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 14px 18px;
+
+  border-bottom: 1px solid #d2d1cd;
+
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  color: #6f736e;
+}
+
+.scan-console-body {
+  padding: 22px 20px;
+
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.8;
+
+  min-height: 135px;
+}
+
+.console-line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+
+  min-height: 22px;
+
+  color: #555a55;
+}
+
+.console-prefix {
+  flex-shrink: 0;
+  color: #111111;
+}
+
+.console-active {
+  margin-top: 5px;
+  color: #111111;
+}
+
+
+/* =========================
+   ERROR
+========================= */
+
+.scan-error {
+  width: min(700px, calc(100% - 80px));
+  margin: 0 auto;
+  padding-top: 160px;
+}
+
+.scan-error-label {
+  margin: 0 0 18px;
+
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+
+  color: #8a8d88;
+}
+
+.scan-error h2 {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 42px;
+  font-weight: 400;
+}
+
+.scan-error p:last-child {
+  margin-top: 20px;
+
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.7;
+
+  color: #737873;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+  .scan-progress-container {
+    width: min(100% - 40px, 700px);
+    padding-top: 60px;
   }
 
-  .scan-target-url {
-    font-size: 14px;
+  .scan-progress-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 30px;
   }
 
-  .scan-radar {
-    width: 120px;
-    height: 120px;
+  .scan-percentage {
+    font-size: 48px;
   }
 
-  .radar-ring-three {
-    width: 115px;
-    height: 115px;
+  .scan-current {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
   }
 }
