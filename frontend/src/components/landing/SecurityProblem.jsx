@@ -1,8 +1,16 @@
 import "../../styles/landing/SecurityProblem.css";
+import NetworkBackground from "../common/NetworkBackground";
 
 export default function SecurityProblem() {
   return (
     <section className="security-problem">
+      <NetworkBackground
+       nodeCount={50}
+       connectionDistance={150}
+       lineOpacity={0.09}
+       nodeOpacity={0.28}
+       speed={0.07}
+       />
  
       <div className="problem-content">
         <div className="problem-eyebrow">

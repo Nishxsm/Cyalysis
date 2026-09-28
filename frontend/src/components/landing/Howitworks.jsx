@@ -1,4 +1,5 @@
 import "../../styles/landing/HowItWorks.css";
+import NetworkBackground from "../common/NetworkBackground";
 
 function ChainIcon() {
   return (
@@ -35,6 +36,13 @@ function ReportIcon() {
 export default function HowItWorks() {
   return (
     <section className="how-it-works">
+        <NetworkBackground
+         nodeCount={45}
+         connectionDistance={145}
+         lineOpacity={0.1}
+         nodeOpacity={0.3}
+         speed={0.08}
+        />
       <div className="how-it-works-header">
         <div className="how-it-works-eyebrow">HOW IT WORKS</div>
 

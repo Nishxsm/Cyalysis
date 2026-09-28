@@ -1,5 +1,6 @@
 .security-problem {
   position: relative;
+  isolation: isolate;
   min-height: 100vh;
   width: 100%;
   display: grid;
@@ -7,12 +8,19 @@
   align-items: center;
   gap: 60px;
   padding: 80px 5%;
-  background: #f4f3f1;
-  color: #111111;
+  background: #090b0b;
+  color: #eeeeea;
   overflow: hidden;
 }
 
-
+.network-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
 
 .problem-content {
   max-width: 760px;
@@ -23,7 +31,7 @@
   font-family: monospace;
   font-size: 13px;
   letter-spacing: 0.16em;
-  color: #858481;
+  color: #00b89c;
 }
 
 .problem-content h2 {
@@ -41,7 +49,7 @@
   font-family: monospace;
   font-size: 15px;
   line-height: 1.9;
-  color: #555552;
+  color: #858984;
 }
 
 
@@ -49,9 +57,10 @@
 
 .problem-points {
   width: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.18);
+  border: 1px solid #292f2d;
   border-radius: 28px;
   overflow: hidden;
+  background: rgba(17, 21, 20, 0.55);
 }
 
 .problem-point {
@@ -59,9 +68,8 @@
   align-items: flex-start;
   gap: 20px;
   padding: 27px 30px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+  border-bottom: 1px solid #292f2d;
 }
-
 .problem-point:last-child {
   border-bottom: none;
 }
@@ -101,6 +109,7 @@
   font-family: monospace;
   font-size: 16px;
   font-weight: 500;
+  color: #eeeeea;
 }
 
 .problem-point p {
@@ -108,7 +117,7 @@
   font-family: monospace;
   font-size: 13px;
   line-height: 1.7;
-  color: #66635f;
+  color: #858984;
 }
 
 
@@ -117,12 +126,12 @@
   width: 100%;
   max-width: 650px;
   justify-self: end;
-  background: #f7f6f4;
-  border: 1px solid rgba(0, 0, 0, 0.13);
+  background: #111615;
+  border: 1px solid #292f2d;
   border-radius: 30px;
   overflow: hidden;
   box-shadow:
-    0 25px 60px rgba(0, 0, 0, 0.09);
+    0 25px 60px rgba(0, 0, 0, 0.3);
 }
 
 .dashboard-header {
@@ -131,11 +140,18 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 26px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 1px solid #292f2d;
   font-family: monospace;
   font-size: 12px;
   letter-spacing: 0.14em;
-  color: #8a8884;
+  color: #858984;
+}
+
+.dashboard-dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #414743;
 }
 
 .dashboard-dots {
@@ -162,9 +178,9 @@
   align-items: center;
   gap: 28px;
   padding: 24px;
-  border: 1px solid #e9c2bb;
+  border: 1px solid #5a302b;
   border-radius: 22px;
-  background: #fff7f5;
+  background: #191211;
 }
 
 .score {
@@ -179,7 +195,7 @@
   font-size: 46px;
   font-weight: 400;
   line-height: 1;
-  color: #c93425;
+  color: #e05a4f;
 }
 
 .score span {
@@ -187,11 +203,12 @@
   font-family: monospace;
   font-size: 11px;
   letter-spacing: 0.12em;
-  color: #b12e21;
+  color: #d35a4e;
 }
 
 .alert-copy {
   font-family: monospace;
+  color: #eeeeea;
 }
 
 .alert-copy strong {
@@ -203,7 +220,7 @@
   margin: 8px 0 0;
   font-size: 12px;
   line-height: 1.7;
-  color: #5d5855;
+  color: #858984;
 }
 
 
@@ -212,15 +229,16 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   margin-top: 24px;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid #292f2d;
   border-radius: 20px;
   overflow: hidden;
+  background: #121715;
 }
 
 .dashboard-stats > div {
   padding: 20px 10px;
   text-align: center;
-  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  border-right: 1px solid #292f2d;
 }
 
 .dashboard-stats > div:last-child {
@@ -232,6 +250,7 @@
   font-family: Georgia, serif;
   font-size: 27px;
   font-weight: 400;
+  color: #eeeeea;
 }
 
 .dashboard-stats span {
@@ -239,7 +258,7 @@
   margin-top: 7px;
   font-family: monospace;
   font-size: 11px;
-  color: #85827e;
+  color: #858984;
 }
 
 .stat-red {
@@ -262,7 +281,7 @@
   font-family: monospace;
   font-size: 12px;
   letter-spacing: 0.13em;
-  color: #92908c;
+  color: #858984;
 }
 
 .category-list {
@@ -273,14 +292,13 @@
 
 .category-list span {
   padding: 9px 13px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid #303633;
   border-radius: 999px;
-  background: #f0efed;
+  background: #181c1a;
   font-family: monospace;
   font-size: 11px;
-  color: #55534f;
+  color: #a2a8a4;
 }
-
 
 
 
@@ -290,9 +308,9 @@
   gap: 13px;
   padding: 14px;
   margin-top: 9px;
-  border: 1px solid #ebc7c1;
+  border: 1px solid #59312c;
   border-radius: 16px;
-  background: #fff8f6;
+  background: #191211;
 }
 
 .finding-icon {
@@ -303,10 +321,10 @@
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  background: #ffebe7;
-  border: 1px solid #edc0b9;
+  background: #211513;
+  border: 1px solid #5a302b;
   font-family: monospace;
-  color: #c93425;
+  color: #e05a4f;
 }
 
 .finding-copy {
@@ -320,11 +338,12 @@
 .finding-copy strong {
   font-size: 12px;
   font-weight: 500;
+  color: #eeeeea;
 }
 
 .finding-copy span {
   font-size: 10px;
-  color: #77736f;
+  color: #858984;
 }
 
 .severity {
@@ -336,15 +355,15 @@
 }
 
 .severity.medium {
-  color: #a55d16;
-  background: #fff1d9;
-  border: 1px solid #ebd0a2;
+  color: #dca35a;
+  background: #211b12;
+  border: 1px solid #594528;
 }
 
 .severity.low {
-  color: #276b55;
-  background: #eaf5f0;
-  border: 1px solid #b9d5c9;
+  color: #68b89e;
+  background: #12201b;
+  border: 1px solid #285043;
 }
 
 

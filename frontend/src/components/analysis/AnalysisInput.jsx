@@ -8,6 +8,8 @@ import {
   Layers3,
 } from "lucide-react";
 
+import NetworkBackground from "../common/NetworkBackground";
+
 import "../../styles/analysis/AnalysisInput.css";
 
 const analysisCards = [
@@ -74,6 +76,7 @@ export default function AnalysisInput({ onStart }) {
 
   return (
     <main className="analysis-page">
+      <NetworkBackground />
       <section className="analysis-hero">
 
         <div className="analysis-status">

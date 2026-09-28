@@ -2,13 +2,20 @@
   box-sizing: border-box;
 }
 
-html,
-body,
-#root {
+html {
+  background: #090b0b;
+  color-scheme: dark;
+}
+
+body {
   margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100%;
+  background: #090b0b;
+  color: #eeeeea;
+}
+
+#root {
+  min-height: 100vh;
+  background: #090b0b;
 }
 
 body {

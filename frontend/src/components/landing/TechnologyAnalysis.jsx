@@ -1,4 +1,5 @@
 import "../../styles/landing/TechnologyAnalysis.css";
+import NetworkBackground from "../common/NetworkBackground";
 
 const technologies = [
   ["JavaScript", "JS"],
@@ -55,7 +56,13 @@ function TechnologyColumn({ items, className }) {
 export default function TechnologyAnalysis() {
   return (
     <section className="technology-analysis">
-
+      <NetworkBackground
+       nodeCount={45}
+       connectionDistance={145}
+       lineOpacity={0.08}
+       nodeOpacity={0.25}
+       speed={0.07}
+       />
 
 
       <div className="technology-showcase">
