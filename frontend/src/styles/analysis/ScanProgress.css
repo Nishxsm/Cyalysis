@@ -1,8 +1,15 @@
 .scan-progress-page {
   min-height: 100vh;
   width: 100%;
-  background: #f4f3f1;
-  color: #111111;
+  background: #090b0b;
+  color: #eeeeea;
+  box-sizing: border-box;
+  color-scheme: dark;
+}
+
+.scan-progress-page *,
+.scan-progress-page *::before,
+.scan-progress-page *::after {
   box-sizing: border-box;
 }
 
@@ -11,13 +18,9 @@
   min-height: 100vh;
   margin: 0 auto;
   padding: 90px 0 70px;
-  box-sizing: border-box;
 }
 
-
-/* =========================
-   HEADER
-========================= */
+/* Header */
 
 .scan-progress-header {
   display: flex;
@@ -29,135 +32,129 @@
 
 .scan-label {
   display: block;
-  margin-bottom: 18px;
-
+  margin-bottom: 24px;
+  color: #00b89c;
   font-family: "Courier New", monospace;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-
-  color: #7c817c;
 }
 
 .scan-progress-header h1 {
   margin: 0;
-
+  color: #eeeeea;
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(42px, 5vw, 72px);
   font-weight: 400;
-  line-height: 0.95;
+  line-height: 1.05;
   letter-spacing: -0.045em;
 }
 
 .scan-target {
   margin: 22px 0 0;
-
+  color: #858984;
   font-family: "Courier New", monospace;
   font-size: 13px;
-
-  color: #737873;
+  overflow-wrap: anywhere;
 }
 
 .scan-percentage {
   flex-shrink: 0;
-
+  color: #eeeeea;
   font-family: "Courier New", monospace;
-  font-size: 64px;
+  font-size: clamp(44px, 5vw, 64px);
+  font-weight: 400;
   line-height: 1;
   letter-spacing: -0.06em;
 }
 
+.scan-percentage::after {
+  content: "";
+}
 
-/* =========================
-   PROGRESS BAR
-========================= */
+/* Progress bar */
 
 .scan-progress-bar {
   width: 100%;
-  height: 2px;
-
-  background: #d8d8d4;
+  height: 3px;
   overflow: hidden;
+  background: #252b28;
+  border-radius: 2px;
 }
 
 .scan-progress-fill {
   height: 100%;
-  background: #111111;
-
+  background: #00b89c;
+  border-radius: inherit;
+  box-shadow: 0 0 12px rgba(0, 184, 156, 0.2);
   transition: width 0.35s ease;
 }
 
-
-/* =========================
-   META
-========================= */
+/* Progress metadata */
 
 .scan-progress-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  gap: 16px;
   margin-top: 14px;
-
+  color: #858984;
   font-family: "Courier New", monospace;
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-
-  color: #777b76;
 }
 
-
-/* =========================
-   CURRENT CHECK
-========================= */
+/* Current check */
 
 .scan-current {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  gap: 24px;
   margin-top: 55px;
   padding: 22px 0;
-
-  border-top: 1px solid #d7d6d2;
-  border-bottom: 1px solid #d7d6d2;
+  border-top: 1px solid #292f2d;
+  border-bottom: 1px solid #292f2d;
 }
 
 .scan-current-label {
+  flex-shrink: 0;
+  color: #858984;
   font-family: "Courier New", monospace;
   font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-
-  color: #898d88;
 }
 
 .scan-current-value {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 12px;
-
+  min-width: 0;
+  color: #d9ddd7;
   font-family: "Courier New", monospace;
-  font-size: 14px;
-  color: #111111;
+  font-size: 13px;
+  text-align: right;
+  overflow-wrap: anywhere;
 }
 
 .scan-status-dot {
   width: 7px;
   height: 7px;
-
+  flex: 0 0 7px;
   border-radius: 50%;
-  background: #111111;
-
+  background: #00b89c;
+  box-shadow: 0 0 10px rgba(0, 184, 156, 0.3);
   animation: scanPulse 1.2s ease-in-out infinite;
 }
 
 @keyframes scanPulse {
   0%,
   100% {
-    opacity: 0.35;
+    opacity: 0.4;
     transform: scale(0.85);
   }
 
@@ -167,121 +164,113 @@
   }
 }
 
-
-/* =========================
-   CONSOLE
-========================= */
+/* Console */
 
 .scan-console {
   margin-top: 45px;
-
-  border: 1px solid #d2d1cd;
-  background: #eeece8;
+  overflow: hidden;
+  color: #d9ddd7;
+  background: #111615;
+  border: 1px solid #292f2d;
+  border-radius: 2px;
 }
 
 .scan-console-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  padding: 14px 18px;
-
-  border-bottom: 1px solid #d2d1cd;
-
+  gap: 16px;
+  padding: 15px 19px;
+  color: #858984;
+  background: #141917;
+  border-bottom: 1px solid #292f2d;
   font-family: "Courier New", monospace;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+}
 
-  color: #6f736e;
+.scan-console-header span:last-child {
+  color: #00b89c;
 }
 
 .scan-console-body {
+  min-height: 145px;
   padding: 22px 20px;
-
+  color: #a1a8a1;
+  background: #101311;
   font-family: "Courier New", monospace;
   font-size: 12px;
-  line-height: 1.8;
-
-  min-height: 135px;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
 }
 
 .console-line {
   display: flex;
   align-items: baseline;
   gap: 10px;
-
   min-height: 22px;
-
-  color: #555a55;
+  color: #858984;
 }
 
 .console-prefix {
   flex-shrink: 0;
-  color: #111111;
+  color: #00b89c;
 }
 
 .console-active {
   margin-top: 5px;
-  color: #111111;
+  color: #eeeeea;
 }
 
-
-/* =========================
-   ERROR
-========================= */
+/* Error state */
 
 .scan-error {
   width: min(700px, calc(100% - 80px));
   margin: 0 auto;
-  padding-top: 160px;
+  padding: 160px 0 80px;
 }
 
 .scan-error-label {
   margin: 0 0 18px;
-
+  color: #e47e7e;
   font-family: "Courier New", monospace;
   font-size: 10px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-
-  color: #8a8d88;
 }
 
 .scan-error h2 {
   margin: 0;
-
+  color: #eeeeea;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 42px;
+  font-size: clamp(32px, 4vw, 42px);
   font-weight: 400;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 .scan-error p:last-child {
   margin-top: 20px;
-
+  color: #858984;
   font-family: "Courier New", monospace;
   font-size: 12px;
-  line-height: 1.7;
-
-  color: #737873;
+  line-height: 1.8;
 }
 
-
-/* =========================
-   RESPONSIVE
-========================= */
+/* Responsive */
 
 @media (max-width: 900px) {
   .scan-progress-container {
-    width: min(100% - 40px, 700px);
+    width: min(100% - 48px, 700px);
     padding-top: 60px;
   }
 
   .scan-progress-header {
     align-items: flex-start;
     flex-direction: column;
-    gap: 30px;
+    gap: 28px;
   }
 
   .scan-percentage {
@@ -292,5 +281,75 @@
     align-items: flex-start;
     flex-direction: column;
     gap: 15px;
+  }
+
+  .scan-current-value {
+    justify-content: flex-start;
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .scan-progress-container {
+    width: calc(100% - 36px);
+    padding-top: 44px;
+    padding-bottom: 48px;
+  }
+
+  .scan-progress-header {
+    margin-bottom: 32px;
+  }
+
+  .scan-progress-header h1 {
+    font-size: clamp(38px, 10vw, 48px);
+  }
+
+  .scan-target {
+    font-size: 11px;
+    line-height: 1.8;
+  }
+
+  .scan-progress-meta {
+    font-size: 9px;
+  }
+
+  .scan-current {
+    margin-top: 38px;
+    padding: 19px 0;
+  }
+
+  .scan-current-value {
+    font-size: 11px;
+    line-height: 1.7;
+  }
+
+  .scan-console {
+    margin-top: 30px;
+  }
+
+  .scan-console-header {
+    padding: 13px;
+  }
+
+  .scan-console-body {
+    padding: 18px 13px;
+    font-size: 11px;
+  }
+
+  .scan-error {
+    width: calc(100% - 36px);
+    padding-top: 100px;
+  }
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .scan-status-dot {
+    animation: none;
+  }
+
+  .scan-progress-fill {
+    transition: none;
   }
 }

@@ -4,35 +4,46 @@ export default function OverviewCard({
   value,
   secondary,
   variant = "",
-  wide = false,
   progress,
 }) {
-  const displayValue =
-    value === null || value === undefined || value === ""
-      ? "Unavailable"
-      : value;
+  const isUnavailable =
+    value == null ||
+    String(value).trim() === "" ||
+    String(value).trim().toLowerCase() === "unavailable";
+
+  const displayValue = isUnavailable ? "Unavailable" : value;
 
   return (
-    <article
-      className={`overview-card ${wide ? "overview-card-wide" : ""} ${variant}`}
-    >
+    <article className={`overview-card ${variant}`.trim()}>
       <span className="overview-card-label">{label}</span>
 
-      <div className="overview-card-value">{displayValue}</div>
+      <div
+        className={`overview-card-value ${
+          isUnavailable ? "is-unavailable" : ""
+        }`.trim()}
+      >
+        {displayValue}
+      </div>
 
-      {progress !== undefined && progress !== null && (
-        <div className="overview-card-progress">
-          <div
-            className="overview-card-progress-fill"
-            style={{
-              width: `${Math.max(0, Math.min(100, progress))}%`,
-            }}
-          />
-        </div>
+      {!isUnavailable && secondary && (
+        <span className="overview-card-secondary">
+          {secondary}
+        </span>
       )}
 
-      {secondary && (
-        <span className="overview-card-secondary">{secondary}</span>
+      {progress != null && !isUnavailable && (
+        <div
+          className="overview-card-progress"
+          role="progressbar"
+          aria-valuenow={progress}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
+          <div
+            className="overview-card-progress-fill"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
       )}
     </article>
   );

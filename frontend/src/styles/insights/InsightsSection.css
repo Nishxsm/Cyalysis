@@ -1,6 +1,8 @@
+
 /* Main section */
 .insights-checks-section {
   width: 100%;
+  min-width: 0;
   padding: 64px 0 40px;
   color: #eeeeea;
   scroll-margin-top: 100px;
@@ -18,15 +20,15 @@
   display: flex;
   align-items: flex-start;
   gap: 18px;
-  margin-bottom: 28px;
+  margin: 0 0 28px;
 }
 
 .insights-checks-heading-icon {
+  display: grid;
+  place-items: center;
   width: 44px;
   height: 44px;
   flex: 0 0 44px;
-  display: grid;
-  place-items: center;
   color: #00b89c;
   background: #141a18;
   border: 1px solid #252d2a;
@@ -61,6 +63,7 @@
   display: flex;
   align-items: baseline;
   gap: 7px;
+  flex: 0 0 auto;
   margin-left: auto;
   padding: 10px 13px;
   border: 1px solid #252b29;
@@ -85,21 +88,31 @@
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 10px;
-  margin-bottom: 26px;
+  width: 100%;
+  margin: 0 0 26px;
+  padding: 0;
 }
 
 .insights-state-count {
-  min-width: 0;
   display: flex;
   align-items: center;
   gap: 9px;
-  padding: 14px 12px;
+  width: 100%;
+  min-width: 0;
+  min-height: 60px;
+  margin: 0;
+  padding: 14px 16px;
   background: #101311;
   border: 1px solid #252b29;
   border-radius: 10px;
 }
 
+.insights-state-count > svg {
+  flex: 0 0 auto;
+}
+
 .insights-state-count span {
+  flex: 1 1 auto;
   min-width: 0;
   color: #a1a49f;
   font-size: 11px;
@@ -107,6 +120,7 @@
 }
 
 .insights-state-count strong {
+  flex: 0 0 auto;
   margin-left: auto;
   color: #eeeeea;
   font-family: "Courier New", monospace;
@@ -137,18 +151,19 @@
 /* Search and filters */
 .insights-checks-toolbar {
   display: grid;
-  grid-template-columns: minmax(200px, 1fr) 190px 175px auto;
+  grid-template-columns: minmax(0, 1fr) 190px 175px auto;
   align-items: center;
   gap: 12px;
-  margin-bottom: 32px;
+  width: 100%;
+  margin: 0 0 28px;
 }
 
 .insights-check-search {
-  min-width: 0;
-  height: 43px;
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
+  height: 43px;
   padding: 0 13px;
   color: #858984;
   background: #101311;
@@ -206,11 +221,16 @@
 .insights-check-groups {
   display: flex;
   flex-direction: column;
-  gap: 34px;
+  gap: 22px;
+  width: 100%;
+  min-width: 0;
 }
 
 .insights-check-group {
+  width: 100%;
   min-width: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .insights-check-group-heading {
@@ -218,7 +238,8 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 14px;
+  margin: 0 0 10px;
+  padding: 0;
 }
 
 .insights-check-group-heading h3 {
@@ -240,13 +261,21 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
 }
 
-/* Uniform check cards */
+/* Check cards */
 .insights-check-item {
   display: block;
   width: 100%;
   min-width: 0;
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
   background: linear-gradient(115deg, #121513, #101210);
   border: 1px solid #262c29;
@@ -262,15 +291,17 @@
   border-color: #34413b;
 }
 
-/* Keep the clickable row identical for every status */
+/* Collapsed row */
 .insights-check-trigger {
   display: flex;
   align-items: center;
   gap: 15px;
   width: 100%;
   min-width: 0;
+  height: 82px;
   min-height: 82px;
-  padding: 15px 19px;
+  margin: 0;
+  padding: 0 23px;
   color: inherit;
   background: transparent;
   border: 0;
@@ -292,9 +323,9 @@
   min-width: 38px;
   flex: 0 0 38px;
   color: #00b89c;
+  background: #151a17;
   border: 1px solid #303a34;
   border-radius: 10px;
-  background: #151a17;
 }
 
 .insights-check-item.finding .insights-check-status-icon {
@@ -380,29 +411,48 @@
   transform: rotate(180deg);
 }
 
-/* Evidence appears only when the JSX removes the hidden attribute */
-.insights-check-item .insights-check-details {
+/* Expanded details — aligned like the warning cards */
+.insights-check-item > .insights-check-details {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 0;
   width: 100%;
   min-width: 0;
-  padding: 20px 24px 23px 72px;
+  height: auto;
+  margin: 0;
+  padding: 24px 24px 26px 76px;
   border-top: 1px solid #262c29;
   background: rgba(5, 8, 7, 0.25);
 }
 
-.insights-check-item .insights-check-details[hidden] {
+.insights-check-item > .insights-check-details[hidden] {
   display: none !important;
+}
+
+/* Detail sections */
+.insights-check-detail-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  min-width: 0;
+  margin: 0 0 28px;
+  padding: 0;
+}
+
+.insights-check-detail-block:last-of-type {
+  margin-bottom: 0;
 }
 
 .insights-check-detail-block > span {
   display: block;
-  margin-bottom: 9px;
+  margin: 0 0 10px;
   color: #00b89c;
   font-family: "Courier New", monospace;
   font-size: 10px;
+  font-weight: 500;
   letter-spacing: 0.09em;
+  line-height: 1.6;
 }
 
 .insights-check-detail-block > p {
@@ -413,23 +463,29 @@
   overflow-wrap: anywhere;
 }
 
+/* Evidence panel */
 .insights-check-detail-block pre {
+  display: block;
+  width: 100%;
   max-width: 100%;
+  min-width: 0;
   margin: 0;
-  padding: 14px 15px;
+  padding: 15px 14px;
   overflow-x: auto;
   color: #b9c2ba;
   background: #0a0d0b;
   border: 1px solid #242b27;
-  border-radius: 8px;
+  border-radius: 9px;
   font-family: "Courier New", monospace;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.8;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 
+/* Scoring note */
 .insights-check-detail-note {
+  margin: 0;
   padding-top: 12px;
   color: #858984;
   border-top: 1px solid #252b28;
@@ -437,7 +493,7 @@
   line-height: 1.7;
 }
 
-/* Empty states */
+/* Empty state */
 .insights-checks-empty {
   padding: 42px 24px;
   color: #858984;
@@ -466,7 +522,7 @@
 }
 
 .insights-checks-disclaimer {
-  margin: 28px 0 0;
+  margin: 24px 0 0;
   padding: 16px 19px;
   color: #858984;
   background: #101311;
@@ -475,7 +531,7 @@
   line-height: 1.8;
 }
 
-/* Print-only content stays hidden on screen */
+/* Print-only content */
 .insights-check-item .insights-print-only-details {
   display: none !important;
 }
@@ -541,10 +597,19 @@
     grid-column: 1 / -1;
   }
 
+  .insights-check-groups {
+    gap: 22px;
+  }
+
+  .insights-check-group-heading {
+    margin-bottom: 8px;
+  }
+
   .insights-check-trigger {
-    min-height: 74px;
+    height: 72px;
+    min-height: 72px;
     gap: 11px;
-    padding: 13px;
+    padding: 0 13px;
   }
 
   .insights-check-status-icon {
@@ -558,8 +623,16 @@
     font-size: 13px;
   }
 
-  .insights-check-item .insights-check-details {
-    padding: 18px 15px;
+  .insights-check-item > .insights-check-details {
+    padding: 20px 15px;
+  }
+
+  .insights-check-detail-block {
+    margin-bottom: 24px;
+  }
+
+  .insights-check-detail-block pre {
+    padding: 12px;
   }
 }
 
@@ -594,10 +667,11 @@
   }
 
   .insights-check-trigger {
+    height: auto;
     min-height: 60px;
   }
 
-  .insights-check-item .insights-check-details[hidden] {
+  .insights-check-item > .insights-check-details[hidden] {
     display: flex !important;
     flex-direction: column;
   }
@@ -605,5 +679,120 @@
   .insights-check-item .insights-print-only-details {
     display: flex !important;
     flex-direction: column;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .insights-check-item,
+  .insights-check-trigger,
+  .insights-check-chevron {
+    transition: none;
+  }
+}
+
+
+/* Match expanded check details to the warning-card layout */
+.insights-check-item > div > .insights-check-details,
+.insights-check-item > .insights-print-only-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  margin: 0;
+  padding: 24px 24px 26px 76px;
+  border-top: 1px solid #262c29;
+  background: rgba(5, 8, 7, 0.25);
+  box-sizing: border-box;
+}
+
+/* Separate the detail sections like the warning cards */
+.insights-check-item .insights-check-detail-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  min-width: 0;
+  margin: 0 0 28px;
+  padding: 0;
+}
+
+.insights-check-item .insights-check-detail-block:last-of-type {
+  margin-bottom: 0;
+}
+
+.insights-check-item .insights-check-detail-block > span {
+  margin: 0 0 10px;
+  line-height: 1.6;
+}
+
+.insights-check-item .insights-check-detail-block > p {
+  margin: 0;
+  line-height: 1.8;
+}
+
+/* Full-width evidence box */
+.insights-check-item .insights-check-detail-block pre {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 15px 14px;
+  color: #b9c2ba;
+  background: #0a0d0b;
+  border: 1px solid #242b27;
+  border-radius: 9px;
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  box-sizing: border-box;
+}
+
+/* Keep the scoring note aligned with the content */
+.insights-check-item .insights-check-detail-note {
+  margin: 0;
+  padding-top: 12px;
+  color: #858984;
+  border-top: 1px solid #252b28;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+/* Keep interactive and print-only versions separate */
+.insights-check-item > div > .insights-check-details {
+  display: flex;
+}
+
+.insights-check-item .insights-print-only-details {
+  display: none !important;
+}
+
+@media (max-width: 700px) {
+  .insights-check-item > div > .insights-check-details,
+  .insights-check-item > .insights-print-only-details {
+    padding: 20px 15px;
+  }
+
+  .insights-check-item .insights-check-detail-block {
+    margin-bottom: 24px;
+  }
+
+  .insights-check-item .insights-check-detail-block pre {
+    padding: 12px;
+  }
+}
+
+@media print {
+  .insights-check-item > div > .insights-check-details[hidden] {
+    display: flex !important;
+  }
+
+  .insights-check-item > .insights-print-only-details {
+    display: flex !important;
   }
 }

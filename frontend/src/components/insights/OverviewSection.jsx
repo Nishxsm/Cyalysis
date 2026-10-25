@@ -1,229 +1,230 @@
 
 import { useMemo } from "react";
 import { Copy, LayoutDashboard } from "lucide-react";
+
 import OverviewCard from "./OverviewCard";
 import "../../styles/insights/OverviewSection.css";
 import "../../styles/insights/OverviewCard.css";
 
 function getPayload(result) {
-  return result?.result ?? result?.data ?? result ?? {};
+  let payload = result ?? {};
+
+  for (let i = 0; i < 3; i++) {
+    const nested = payload?.result ?? payload?.data;
+
+    if (!nested || typeof nested !== "object" || Array.isArray(nested)) {
+      break;
+    }
+
+    payload = nested;
+  }
+
+  return payload;
 }
 
 function getChecks(payload) {
-  const checks =
-    payload?.checks ??
-    payload?.results ??
-    payload?.scan_results ??
-    payload?.check_results ??
-    [];
-
-  return Array.isArray(checks) ? checks : [];
-}
-
-function getCheckName(check) {
-  return String(
-    check?.name ??
-    check?.check_name ??
-    check?.title ??
-    check?.check ??
-    ""
-  )
-    .toLowerCase()
-    .replace(/[_-]+/g, " ");
-}
-
-function getCheckText(check) {
-  return [
-    check?.message,
-    check?.description,
-    check?.evidence,
-    check?.output,
-    check?.details,
-    check?.value,
-  ]
-    .filter((value) => value != null)
-    .map((value) =>
-      typeof value === "object" ? JSON.stringify(value) : String(value)
-    )
-    .join(" ");
-}
-
-function findCheck(checks, keywords) {
-  return checks.find((check) => {
-    const name = getCheckName(check);
-    return keywords.some((keyword) => name.includes(keyword));
-  });
-}
-
-function getRawValue(payload, checks, fields, keywords = []) {
-  for (const field of fields) {
-    const value = payload?.[field];
-
-    if (value !== undefined && value !== null && value !== "") {
-      return value;
-    }
-  }
-
-  const check = findCheck(checks, keywords);
-  if (!check) return null;
-
   const candidates = [
-    check.value,
-    check.result_value,
-    check.detected,
-    check.version,
-    check.ip,
-    check.response_time_ms,
-    check.status_code,
+    payload?.results,
+    payload?.checks,
+    payload?.scan_results,
+    payload?.check_results,
   ];
 
-  for (const value of candidates) {
-    if (value !== undefined && value !== null && value !== "") {
-      return value;
-    }
-  }
+  return candidates.find(Array.isArray) ?? [];
+}
 
-  return getCheckText(check) || null;
+function normalizeName(value) {
+  return String(value ?? "")
+    .toLowerCase()
+    .replace(/[_-]+/g, " ")
+    .trim();
+}
+
+function findCheck(checks, names) {
+  const expected = names.map(normalizeName);
+
+  return (
+    checks.find((check) =>
+      expected.includes(
+        normalizeName(
+          check?.assessment?.canonical_name ??
+            check?.name ??
+            check?.check_name ??
+            check?.title
+        )
+      )
+    ) ??
+    checks.find((check) => {
+      const name = normalizeName(
+        check?.name ?? check?.check_name ?? check?.title
+      );
+
+      return expected.some(
+        (candidate) =>
+          name === candidate || name.includes(candidate)
+      );
+    }) ??
+    null
+  );
+}
+
+function getCheckData(check) {
+  return check?.data ?? {};
 }
 
 function getText(value) {
-  if (value == null || value === "") return null;
+  if (value == null) return null;
+
+  if (typeof value === "string") {
+    const text = value.trim();
+
+    if (
+      !text ||
+      /^(unavailable|unknown|n\/a|null)$/i.test(text)
+    ) {
+      return null;
+    }
+
+    return text;
+  }
+
+  if (typeof value === "number" || typeof value === "boolean") {
+    return String(value);
+  }
+
+  if (Array.isArray(value)) {
+    const values = value.map(getText).filter(Boolean);
+    return values.length ? values.join(", ") : null;
+  }
 
   if (typeof value === "object") {
-    const preferred =
-      value.value ??
-      value.name ??
-      value.version ??
-      value.ip ??
-      value.address;
-
-    return preferred != null ? String(preferred) : null;
-  }
-
-  return String(value).trim();
-}
-
-function extractStatus(value) {
-  if (value == null) return null;
-
-  const text = String(value);
-
-  const match = text.match(
-    /\b(?:HTTP\s+(?:status(?:\s+code)?\s*)?(?:returned\s*)?|status(?:\s+code)?\s*[:=]?\s*)([1-5]\d{2})\b/i
-  );
-
-  if (match) return Number(match[1]);
-
-  const exact = text.trim().match(/^[1-5]\d{2}$/);
-  return exact ? Number(exact[0]) : null;
-}
-
-function extractTime(value) {
-  if (value == null) return null;
-
-  if (typeof value === "number" && Number.isFinite(value)) {
-    return { value };
-  }
-
-  const text = String(value);
-
-  const match = text.match(
-    /(?:response(?:\s+received)?(?:\s+in)?|response\s+time)\s*[:=]?\s*([\d.]+)\s*(ms|milliseconds?|s|seconds?)\b/i
-  );
-
-  if (match) {
-    const amount = Number(match[1]);
-    const unit = match[2].toLowerCase();
-
-    if (!Number.isFinite(amount)) return null;
-
-    return {
-      value: unit.startsWith("s") ? amount * 1000 : amount,
-    };
-  }
-
-  const exact = text.trim().match(/^([\d.]+)\s*(ms|milliseconds?)$/i);
-
-  if (exact && Number.isFinite(Number(exact[1]))) {
-    return { value: Number(exact[1]) };
+    for (const key of [
+      "value",
+      "name",
+      "version",
+      "ip",
+      "address",
+      "hostname",
+      "provider",
+      "organization",
+      "org",
+      "response_time_ms",
+      "status_code",
+    ]) {
+      if (value[key] != null) {
+        const text = getText(value[key]);
+        if (text) return text;
+      }
+    }
   }
 
   return null;
-}
-
-function extractRedirects(value) {
-  if (value == null) return null;
-
-  const text = String(value);
-
-  const match = text.match(
-    /(?:detected\s+)?(\d+)\s+redirect(?:s|\(s\))?/i
-  );
-
-  if (match) return Number(match[1]);
-
-  const exact = text.trim().match(/^\d+$/);
-  return exact ? Number(exact[0]) : null;
 }
 
 function extractIPs(value) {
-  if (value == null) return null;
-
   if (Array.isArray(value)) {
-    return value.map(getText).filter(Boolean).join(", ") || null;
+    return [...new Set(value.map(getText).filter(Boolean))].join(", ") || null;
   }
 
-  const text = String(value);
+  return getText(value);
+}
 
-  const labelled = text.match(
-    /(?:resolved\s+ip(?:\s+addresses)?|server\s+ip(?:\s+addresses)?)\s*[:=]\s*([\s\S]+)/i
+function extractIssuer(issuer) {
+  if (!Array.isArray(issuer)) {
+    return getText(issuer);
+  }
+
+  const parts = [];
+
+  function visit(value) {
+    if (!Array.isArray(value)) return;
+
+    if (
+      value.length === 2 &&
+      typeof value[0] === "string" &&
+      typeof value[1] === "string"
+    ) {
+      const key = value[0];
+      const label = {
+        organizationName: "Organization",
+        commonName: "Common Name",
+        countryName: "Country",
+      }[key];
+
+      if (label && !parts.some((part) => part.key === key)) {
+        parts.push({ key, label, value: value[1] });
+      }
+
+      return;
+    }
+
+    value.forEach(visit);
+  }
+
+  visit(issuer);
+
+  if (!parts.length) return null;
+
+  const organization = parts.find(
+    (part) => part.key === "organizationName"
+  );
+  const commonName = parts.find(
+    (part) => part.key === "commonName"
   );
 
-  const candidate = labelled ? labelled[1] : text;
-
-  const ipv4 = candidate.match(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g);
-
-  if (ipv4?.length) {
-    return [...new Set(ipv4)].join(", ");
-  }
-
-  const exact = candidate.trim();
-
-  if (exact.includes(":") && /^[0-9a-f:.]+$/i.test(exact)) {
-    return exact;
-  }
-
-  return null;
+  return (
+    organization?.value ??
+    commonName?.value ??
+    parts[0]?.value ??
+    null
+  );
 }
 
-function extractVersion(value, kind) {
-  if (value == null) return null;
-
-  const text = String(value);
-
-  if (kind === "tls") {
-    return text.match(/\bTLSv?[\s-]?1\.[0-3]\b/i)?.[0] ?? null;
-  }
-
-  if (kind === "http") {
-    return text.match(/\bHTTP\/[123](?:\.\d+)?\b/i)?.[0] ?? null;
-  }
-
-  return null;
-}
-
-function formatDate(value) {
+function parseDate(value) {
   if (!value) return null;
 
-  const timestamp = Date.parse(String(value));
+  const text = String(value).trim();
 
-  if (Number.isNaN(timestamp)) return String(value);
+  // OpenSSL-style certificate dates, e.g.
+  // "Dec  4 23:29:33 2026 GMT"
+  const opensslMatch = text.match(
+    /^([A-Za-z]{3})\s+(\d{1,2})\s+(\d{2}:\d{2}:\d{2})\s+(\d{4})\s+GMT$/
+  );
+
+  if (opensslMatch) {
+    const [, month, day, time, year] = opensslMatch;
+    const timestamp = Date.parse(
+      `${month} ${day}, ${year} ${time} GMT`
+    );
+
+    return Number.isNaN(timestamp) ? null : timestamp;
+  }
+
+  const timestamp = Date.parse(text);
+
+  return Number.isNaN(timestamp) ? null : timestamp;
+}
+
+function formatDate(timestamp) {
+  if (timestamp == null) return null;
 
   return new Date(timestamp).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "short",
     year: "numeric",
+    timeZone: "UTC",
   });
+}
+
+function extractVersion(value, kind) {
+  const text = getText(value);
+  if (!text) return null;
+
+  if (kind === "tls") {
+    return text.match(/\bTLSv?1\.[0-3]\b/i)?.[0] ?? null;
+  }
+
+  return text.match(/\bHTTP\/[123](?:\.\d+)?\b/i)?.[0] ?? null;
 }
 
 export default function OverviewSection({ result }) {
@@ -231,128 +232,102 @@ export default function OverviewSection({ result }) {
   const checks = useMemo(() => getChecks(payload), [payload]);
 
   const info = useMemo(() => {
+    const redirectCheck = findCheck(checks, [
+      "Redirect Chain Analysis",
+    ]);
+
+    const statusCheck = findCheck(checks, [
+      "HTTP Status Analysis",
+    ]);
+
+    const responseTimeCheck = findCheck(checks, [
+      "Response Time Measurement",
+    ]);
+
+    const ipCheck = findCheck(checks, [
+      "IP Resolution",
+    ]);
+
+    const cdnCheck = findCheck(checks, [
+      "CDN Detection",
+    ]);
+
+    const tlsCheck = findCheck(checks, [
+      "TLS Version",
+    ]);
+
+    const certificateExpiryCheck = findCheck(checks, [
+      "Certificate Expiration",
+    ]);
+
+    const certificateChainCheck = findCheck(checks, [
+      "Certificate Chain",
+      "TLS Chain",
+    ]);
+
+    const redirectData = getCheckData(redirectCheck);
+    const statusData = getCheckData(statusCheck);
+    const responseTimeData = getCheckData(responseTimeCheck);
+    const ipData = getCheckData(ipCheck);
+    const cdnData = getCheckData(cdnCheck);
+    const tlsData = getCheckData(tlsCheck);
+    const expiryData = getCheckData(certificateExpiryCheck);
+    const chainData = getCheckData(certificateChainCheck);
+
     const target =
-      getText(payload.target_url) ??
-      getText(payload.target) ??
-      getText(payload.url) ??
+      getText(payload?.target_url) ??
+      getText(payload?.target) ??
+      getText(payload?.url) ??
       "Target unavailable";
 
-    // Read final URL only from explicit URL fields or a specifically named check.
-    const finalUrl = getText(
-      getRawValue(
-        payload,
-        checks,
-        ["final_url", "finalUrl", "resolved_url", "final_uri"],
-        ["final url"]
-      )
+    const finalUrl =
+      getText(redirectData.final_url) ??
+      target;
+
+    const status =
+      Number(statusData.status_code) ||
+      Number(redirectData.status_code) ||
+      null;
+
+    const responseTimeValue = Number(
+      responseTimeData.response_time_ms
     );
 
-    const statusRaw = getRawValue(
-      payload,
-      checks,
-      ["http_status", "status_code", "statusCode"],
-      ["http status", "http response"]
-    );
+    const responseTime =
+      Number.isFinite(responseTimeValue) &&
+      responseTimeData.response_time_ms != null
+        ? responseTimeValue
+        : null;
 
-    const versionRaw = getRawValue(
-      payload,
-      checks,
-      ["http_version", "httpVersion", "protocol"],
-      ["http version", "http protocol"]
-    );
-
-    const timeRaw = getRawValue(
-      payload,
-      checks,
-      ["response_time_ms", "response_time", "responseTime"],
-      ["response time"]
-    );
-
-    const redirectsRaw = getRawValue(
-      payload,
-      checks,
-      ["redirect_count", "redirects_count", "redirectCount"],
-      ["redirect chain", "redirect count"]
-    );
-
-    const ipRaw = getRawValue(
-      payload,
-      checks,
-      ["server_ip", "ip_address", "resolved_ip", "ip"],
-      ["ip resolution", "server ip"]
-    );
-
-    const providerRaw = getRawValue(
-      payload,
-      checks,
-      ["asn_provider", "provider", "hosting_provider", "asn_org"],
-      ["asn provider", "hosting provider"]
-    );
-
-    const cdnRaw = getRawValue(
-      payload,
-      checks,
-      ["cdn", "cdn_provider"],
-      ["cdn detection", "cdn provider"]
-    );
-
-    const locationRaw = getRawValue(
-      payload,
-      checks,
-      ["server_location", "location", "geo_location"],
-      ["server location", "geolocation"]
-    );
-
-    const tlsRaw = getRawValue(
-      payload,
-      checks,
-      ["tls_version", "tlsVersion", "protocol_version"],
-      ["tls version", "ssl version"]
-    );
-
-    const expiryRaw = getRawValue(
-      payload,
-      checks,
-      ["certificate_days_remaining", "cert_days_remaining"],
-      ["certificate expiration", "certificate expiry"]
-    );
-
-    const expiryDateRaw = getRawValue(
-      payload,
-      checks,
-      ["certificate_expiry", "cert_expiry", "expires_at"],
-      ["certificate expiration date", "certificate expiry date"]
-    );
-
-    const issuerRaw = getRawValue(
-      payload,
-      checks,
-      ["certificate_issuer", "cert_issuer", "issuer"],
-      ["certificate issuer"]
-    );
-
-    const status = extractStatus(statusRaw);
-    const time = extractTime(timeRaw);
-    const redirects = extractRedirects(redirectsRaw);
-    const ips = extractIPs(ipRaw);
-    const httpVersion = extractVersion(versionRaw, "http");
-    const tlsVersion = extractVersion(tlsRaw, "tls");
-
-    const cdnText = getText(cdnRaw);
-    const cdn = cdnText
-      ? /no supported cdn|not detected|none detected/i.test(cdnText)
-        ? "Not detected"
-        : cdnText
+    const redirectList = redirectData.redirects;
+    const redirects = Array.isArray(redirectList)
+      ? redirectList.length
       : null;
 
-    const expiryText = getText(expiryRaw);
-    const expiryMatch = expiryText?.match(
-      /^\s*(\d+(?:\.\d+)?)\s*(?:days?)?\s*$/i
-    );
+    const serverIp = extractIPs(ipData.ips);
 
-    const expiryNumber = expiryMatch
-      ? Number(expiryMatch[1])
-      : null;
+    const cdnEntries = cdnData.cdn;
+    const cdn = Array.isArray(cdnEntries)
+      ? cdnEntries
+          .map((entry) => getText(entry?.name))
+          .filter(Boolean)
+          .filter((name, index, all) => all.indexOf(name) === index)
+          .join(", ") || null
+      : getText(cdnEntries);
+
+    const tlsVersion = extractVersion(tlsData.version, "tls");
+
+    const expiryTimestamp = parseDate(expiryData.not_after);
+    const certExpiryDate = formatDate(expiryTimestamp);
+
+    const certExpiry =
+      expiryTimestamp !== null
+        ? Math.ceil(
+            (expiryTimestamp - Date.now()) / (1000 * 60 * 60 * 24)
+          )
+        : null;
+
+    const certIssuer = extractIssuer(chainData.issuer);
 
     return {
       target,
@@ -364,17 +339,19 @@ export default function OverviewSection({ result }) {
             ? "Successful response"
             : "HTTP response received"
           : null,
-      httpVersion,
-      responseTime: time?.value ?? null,
+      // This scanner JSON does not currently contain a negotiated
+      // HTTP version, ASN lookup, or server geolocation result.
+      httpVersion: null,
+      responseTime,
       redirects,
-      serverIp: ips,
-      provider: getText(providerRaw),
+      serverIp,
+      provider: null,
       cdn,
-      location: getText(locationRaw),
+      location: null,
       tlsVersion,
-      certExpiry: expiryNumber,
-      certExpiryDate: formatDate(expiryDateRaw),
-      certIssuer: getText(issuerRaw),
+      certExpiry,
+      certExpiryDate,
+      certIssuer,
     };
   }, [payload, checks]);
 
@@ -395,12 +372,10 @@ export default function OverviewSection({ result }) {
 
   let finalHostname = info.target;
 
-  if (info.finalUrl) {
-    try {
-      finalHostname = new URL(info.finalUrl).hostname;
-    } catch {
-      finalHostname = info.finalUrl;
-    }
+  try {
+    finalHostname = new URL(info.finalUrl).hostname;
+  } catch {
+    finalHostname = info.finalUrl;
   }
 
   return (
@@ -417,7 +392,7 @@ export default function OverviewSection({ result }) {
       </div>
 
       <div className="overview-grid">
-        <article className="overview-card overview-card-wide">
+        <article className="overview-card">
           <span className="overview-card-label">FINAL URL</span>
 
           <div className="overview-card-copy-row">
@@ -428,7 +403,7 @@ export default function OverviewSection({ result }) {
             <button
               type="button"
               className="overview-copy-button"
-              onClick={() => copyValue(info.finalUrl ?? info.target)}
+              onClick={() => copyValue(info.finalUrl)}
               aria-label="Copy target URL"
               title="Copy target URL"
             >
@@ -437,7 +412,7 @@ export default function OverviewSection({ result }) {
           </div>
 
           <span className="overview-card-secondary overview-url-secondary">
-            {info.finalUrl ?? info.target}
+            {info.finalUrl}
           </span>
         </article>
 
@@ -467,7 +442,9 @@ export default function OverviewSection({ result }) {
         <OverviewCard
           label="REDIRECTS"
           value={info.redirects}
-          secondary={info.redirects !== null ? "redirects followed" : null}
+          secondary={
+            info.redirects !== null ? "redirects followed" : null
+          }
         />
 
         <OverviewCard
@@ -510,7 +487,9 @@ export default function OverviewSection({ result }) {
           label="CERT EXPIRY"
           value={
             info.certExpiry !== null
-              ? `${info.certExpiry} days`
+              ? info.certExpiry >= 0
+                ? `${info.certExpiry} days`
+                : "Expired"
               : null
           }
           secondary={info.certExpiryDate}

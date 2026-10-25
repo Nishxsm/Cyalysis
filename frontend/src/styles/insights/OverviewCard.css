@@ -27,10 +27,11 @@
 
 .overview-card-value {
   max-width: 100%;
-  overflow-wrap: anywhere;
+  min-width: 0;
   color: #eeeeea;
   font-size: 17px;
   line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 .overview-card-secondary {
@@ -65,6 +66,36 @@
 
 .overview-card-provider .overview-card-value {
   font-size: 15px;
+}
+
+/* Consistent unavailable styling for every card variant */
+.overview-card .overview-card-value.is-unavailable {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 30px;
+  margin: 0;
+  padding: 6px 10px;
+
+  color: #858984 !important;
+  -webkit-text-fill-color: #858984;
+
+  background: #101311;
+  border: 1px solid #292f2d;
+  border-radius: 999px;
+
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-shadow: none;
+
+  white-space: normal;
+  overflow-wrap: anywhere;
+  box-sizing: border-box;
 }
 
 .overview-card-copy-row {
@@ -139,5 +170,10 @@
   .overview-card-status .overview-card-value,
   .overview-card-response .overview-card-value {
     font-size: 21px;
+  }
+
+  /* Preserve unavailable styling on smaller screens */
+  .overview-card .overview-card-value.is-unavailable {
+    font-size: 11px;
   }
 }

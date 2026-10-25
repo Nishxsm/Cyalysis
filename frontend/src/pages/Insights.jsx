@@ -1,5 +1,5 @@
 
-import { useLocation, useParams, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 import InsightsSidebar from "../components/insights/InsightsSidebar";
 import OverviewSection from "../components/insights/OverviewSection";
@@ -12,7 +12,6 @@ import "../styles/insights/InsightsPrint.css";
 
 export default function Insights() {
   const location = useLocation();
-  const { scanId } = useParams();
 
   const result = location.state?.result ?? null;
   const payload = result?.result ?? result?.data ?? result ?? {};
@@ -50,22 +49,6 @@ export default function Insights() {
       <InsightsSidebar target={target} result={result} />
 
       <div className="insights-main">
-        <header className="insights-page-header">
-          <Link to="/" className="insights-page-brand">
-            <span className="insights-brand-mark">C</span>
-            <span>CYALYSIS</span>
-          </Link>
-
-          <div className="insights-header-target">
-            <span>/</span>
-            {target}
-          </div>
-
-          <span className="insights-header-id">
-            {scanId ? `SCAN ${scanId}` : "SECURITY REPORT"}
-          </span>
-        </header>
-
         <OverviewSection result={result} />
 
         <ScoredSummary result={result} />
