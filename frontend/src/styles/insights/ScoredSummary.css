@@ -1,0 +1,140 @@
+
+.scored-summary {
+  width: 100%;
+  margin: 48px 0 0;
+  color: #eeeeea;
+}
+
+.scored-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.scored-summary-card {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid #242927;
+  border-radius: 17px;
+  background: linear-gradient(145deg, #141816, #101211);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.scored-summary-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.scored-summary-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #00b89c;
+  border: 1px solid #29332f;
+  border-radius: 10px;
+  background: #151b19;
+}
+
+.scored-summary-score {
+  color: #00b89c;
+  font-family: "Courier New", monospace;
+  font-size: 22px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.scored-summary-score span {
+  color: #858984;
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.scored-summary-card h3 {
+  margin: 2px 0 0;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.scored-summary-card p {
+  min-height: 36px;
+  margin: 0;
+  color: #858984;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.scored-summary-progress {
+  height: 5px;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #292f2d;
+}
+
+.scored-summary-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #00b89c;
+  transition: width 0.4s ease;
+}
+
+.scored-summary-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  color: #858984;
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+}
+
+.scored-summary-method {
+  margin-top: 24px;
+  padding: 22px;
+  border: 1px solid #242927;
+  border-radius: 14px;
+  background: #101311;
+}
+
+.scored-summary-method > span {
+  color: #00b89c;
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+
+.scored-summary-method p {
+  margin: 12px 0 0;
+  color: #858984;
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+@media (max-width: 760px) {
+  .scored-summary {
+    margin-top: 32px;
+  }
+
+  .scored-summary-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .scored-summary-card {
+    padding: 20px;
+  }
+
+  .scored-summary-method {
+    padding: 18px;
+  }
+}
