@@ -1,61 +1,56 @@
-
 import { useEffect, useState } from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
-const API = "http://localhost:8080/api/auth/me";
+const API_URL = "/api/auth";
 
 export default function ProtectedRoute() {
-  const [status, setStatus] = useState("checking");
-  const location = useLocation();
+  const [loading, setLoading] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    let active = true;
+    const controller = new AbortController();
 
-    fetch(API, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-      },
-    })
-      .then(async (response) => {
+    async function checkSession() {
+      try {
+        const response = await fetch(`${API_URL}/me`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+          },
+          signal: controller.signal,
+        });
+
         if (!response.ok) {
-          throw new Error("Not authenticated");
+          setAuthenticated(false);
+          return;
         }
 
         const data = await response.json();
-
-        // Adjust this check if your /me endpoint uses a different response shape.
-        if (data.user || data.id || data.email) {
-          return "authenticated";
+        setAuthenticated(Boolean(data.user?.id));
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          console.error("Session check failed:", error);
+          setAuthenticated(false);
         }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
 
-        throw new Error("Not authenticated");
-      })
-      .then((result) => {
-        if (active) setStatus(result);
-      })
-      .catch(() => {
-        if (active) setStatus("unauthenticated");
-      });
+    checkSession();
 
-    return () => {
-      active = false;
-    };
+    return () => controller.abort();
   }, []);
 
-  if (status === "checking") {
-    return <div className="auth-checking">Checking session...</div>;
+  if (loading) {
+    return <p>Checking session...</p>;
   }
 
-  if (status === "unauthenticated") {
-    return (
-      <Navigate
-        to="/login"
-        replace
-        state={{ from: location }}
-      />
-    );
+  if (!authenticated) {
+    return <Navigate to="/login" replace />;
   }
 
   return <Outlet />;

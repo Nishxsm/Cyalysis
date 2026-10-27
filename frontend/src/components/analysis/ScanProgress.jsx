@@ -18,7 +18,7 @@ export default function ScanProgress({ target }) {
   const [error, setError] = useState(null);
 
   /*
-   * Start the scan.
+   * Start a scan using the existing login session.
    */
   useEffect(() => {
     let cancelled = false;
@@ -27,17 +27,23 @@ export default function ScanProgress({ target }) {
       try {
         const response = await fetch("/api/scan", {
           method: "POST",
+          credentials: "include",
           headers: {
+            Accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            target,
-          }),
+          body: JSON.stringify({ target }),
         });
 
-        const data = await response.json();
+        const data = await response.json().catch(() => ({}));
 
         if (!response.ok || data.status !== "started") {
+          if (response.status === 401) {
+            throw new Error(
+              "Your session was not recognized. Please log in again."
+            );
+          }
+
           throw new Error(data.error || "Unable to start scan.");
         }
 
@@ -46,12 +52,16 @@ export default function ScanProgress({ target }) {
         }
       } catch (err) {
         if (!cancelled) {
-          setError(err.message);
+          setError(err.message || "Unable to start scan.");
         }
       }
     }
 
-    startScan();
+    if (target) {
+      startScan();
+    } else {
+      setError("Please provide a target URL.");
+    }
 
     return () => {
       cancelled = true;
@@ -59,48 +69,82 @@ export default function ScanProgress({ target }) {
   }, [target]);
 
   /*
-   * Poll scanner progress.
+   * Poll progress and retrieve the final result.
    */
   useEffect(() => {
-    if (!scanId) {
-      return;
-    }
+    if (!scanId) return;
 
     let cancelled = false;
-    let intervalId;
+    let intervalId = null;
+    let fetching = false;
 
     async function fetchProgress() {
+      if (fetching || cancelled) return;
+
+      fetching = true;
+
       try {
         const response = await fetch(
-          `/api/scan/${scanId}/progress`
+          `/api/scan/${scanId}/progress`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              Accept: "application/json",
+            },
+          }
         );
 
-        const data = await response.json();
+        const data = await response.json().catch(() => ({}));
 
         if (!response.ok) {
+          if (response.status === 401) {
+            throw new Error(
+              "Your session expired. Please log in again."
+            );
+          }
+
           throw new Error(
             data.error || "Unable to read scan progress."
           );
         }
 
-        if (cancelled) {
-          return;
-        }
+        if (cancelled) return;
 
         setProgress(data);
 
         /*
-         * Once Python has completed all checks,
-         * fetch the final scanner result.
+         * Stop polling immediately when the scanner fails or times out.
+         */
+        if (data.status === "failed") {
+          if (intervalId !== null) {
+            clearInterval(intervalId);
+          }
+
+          setError(data.error || "The scan failed.");
+          return;
+        }
+
+        /*
+         * Retrieve results once the scanner reports completion.
          */
         if (data.status === "completed") {
-          clearInterval(intervalId);
+          if (intervalId !== null) {
+            clearInterval(intervalId);
+          }
 
           const resultResponse = await fetch(
-            `/api/scan/${scanId}/result`
+            `/api/scan/${scanId}/result`,
+            {
+              method: "GET",
+              credentials: "include",
+              headers: {
+                Accept: "application/json",
+              },
+            }
           );
 
-          const result = await resultResponse.json();
+          const result = await resultResponse.json().catch(() => ({}));
 
           if (!resultResponse.ok) {
             throw new Error(
@@ -108,34 +152,48 @@ export default function ScanProgress({ target }) {
             );
           }
 
-          navigate(`/insights/${scanId}`, {
-            state: {
-              result,
-            },
-          });
+          if (result.status === "failed") {
+            throw new Error(result.error || "The scan failed.");
+          }
+
+          if (!cancelled) {
+            navigate(`/insights/${scanId}`, {
+              state: { result },
+            });
+          }
         }
       } catch (err) {
         if (!cancelled) {
-          setError(err.message);
-          clearInterval(intervalId);
+          setError(
+            err.message || "An error occurred while scanning."
+          );
+
+          if (intervalId !== null) {
+            clearInterval(intervalId);
+          }
         }
+      } finally {
+        fetching = false;
       }
     }
 
     fetchProgress();
-
-    intervalId = setInterval(fetchProgress, 500);
+    intervalId = setInterval(fetchProgress, 1000);
 
     return () => {
       cancelled = true;
-      clearInterval(intervalId);
+
+      if (intervalId !== null) {
+        clearInterval(intervalId);
+      }
     };
   }, [scanId, navigate]);
 
   const percentage =
     progress.total > 0
-      ? Math.round(
-          (progress.completed / progress.total) * 100
+      ? Math.min(
+          100,
+          Math.round((progress.completed / progress.total) * 100)
         )
       : 0;
 
@@ -144,13 +202,18 @@ export default function ScanProgress({ target }) {
       <section className="scan-progress-page">
         <div className="scan-error">
           <p className="scan-error-label">SCAN ERROR</p>
-
           <h2>{error}</h2>
-
           <p>
-            The scanner could not complete the request. Check
-            that the CodeIgniter backend is running.
+            The scan may have timed out or encountered an error.
+            You can return to the analysis page and try again.
           </p>
+
+          <button
+            type="button"
+            onClick={() => navigate("/analysis")}
+          >
+            Back to analysis
+          </button>
         </div>
       </section>
     );
@@ -159,31 +222,27 @@ export default function ScanProgress({ target }) {
   return (
     <section className="scan-progress-page">
       <div className="scan-progress-container">
-
         <div className="scan-progress-header">
           <div>
-            <span className="scan-label">
-              CYALYSIS / SCAN
-            </span>
-
+            <span className="scan-label">CYALYSIS / SCAN</span>
             <h1>Analyzing target.</h1>
-
-            <p className="scan-target">
-              {target}
-            </p>
+            <p className="scan-target">{target}</p>
           </div>
 
-          <div className="scan-percentage">
-            {percentage}%
-          </div>
+          <div className="scan-percentage">{percentage}%</div>
         </div>
 
-        <div className="scan-progress-bar">
+        <div
+          className="scan-progress-bar"
+          role="progressbar"
+          aria-valuenow={percentage}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label="Scan progress"
+        >
           <div
             className="scan-progress-fill"
-            style={{
-              width: `${percentage}%`,
-            }}
+            style={{ width: `${percentage}%` }}
           />
         </div>
 
@@ -195,20 +254,18 @@ export default function ScanProgress({ target }) {
           <span>
             {progress.status === "completed"
               ? "SCAN COMPLETE"
-              : "SCANNING"}
+              : progress.status === "failed"
+                ? "SCAN FAILED"
+                : "SCANNING"}
           </span>
         </div>
 
         <div className="scan-current">
-          <span className="scan-current-label">
-            CURRENT CHECK
-          </span>
+          <span className="scan-current-label">CURRENT CHECK</span>
 
           <div className="scan-current-value">
             <span className="scan-status-dot" />
-
-            {progress.current_check ||
-              "Initializing scanner..."}
+            {progress.current_check || "Initializing scanner..."}
           </div>
         </div>
 
@@ -219,7 +276,6 @@ export default function ScanProgress({ target }) {
           currentCheck={progress.current_check}
           status={progress.status}
         />
-
       </div>
     </section>
   );

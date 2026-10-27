@@ -48,3 +48,7 @@ $routes->get(
     'api/scan/(:segment)/result',
     'ScanController::result/$1'
 );
+
+$routes->group('api/admin', ['filter' => 'cors'], static function ($routes) {
+    $routes->get('dashboard', 'AdminController::dashboard');
+});
